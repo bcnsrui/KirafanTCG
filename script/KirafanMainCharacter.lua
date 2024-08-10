@@ -33,7 +33,7 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	and not e:GetHandler():IsCode(10050110)
 	then Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,2))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,3))
-	return Duel.Win(1-tp,WIN_REASON_GHOSTRICK_MISCHIEF) end
+	return Duel.SetLP(tp,0) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
 	while Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0 
 	and not e:GetHandler():IsCode(10050110) do
@@ -148,7 +148,7 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ConfirmCards(1-tp,sg)
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,0))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,1))
-	return Duel.Win(1-tp,WIN_REASON_GHOSTRICK_MISCHIEF) end
+	return Duel.SetLP(tp,0) end
 	
 	if Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and not e:GetHandler():IsCode(10050110) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -202,7 +202,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	local enemy=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
 	
 	if c:IsSetCard(0xc01) and tp==Duel.GetTurnPlayer() and ally>enemy then	
-	Duel.Win(1-tp,WIN_REASON_GHOSTRICK_MISCHIEF)
+	Duel.SetLP(tp,0)
 	else end
 end
 
