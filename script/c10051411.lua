@@ -56,6 +56,7 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)

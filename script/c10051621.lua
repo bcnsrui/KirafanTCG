@@ -2,7 +2,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Kirafan2.CreamateCharacter(c)
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
@@ -31,13 +31,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return (e:GetHandler():GetDefense()>=6 or e:GetHandler():GetAttack()>=3)
+	return e:GetHandler():GetDefense()>=6 or e:GetHandler():GetAttack()>=3
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	e1:SetValue(1)
@@ -59,6 +57,7 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=2
 	if (c:GetDefense()>=6 or c:GetAttack()>=3) then dam=3 end

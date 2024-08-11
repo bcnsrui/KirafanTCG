@@ -62,6 +62,7 @@ function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=Duel.GetMatchingGroupCount(s.fcfllter,tp,0,LOCATION_MZONE,nil)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)

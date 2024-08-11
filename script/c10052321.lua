@@ -44,6 +44,7 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dotte=Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)
 	if dotte>0 and dotte<=3 and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then

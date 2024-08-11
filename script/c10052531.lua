@@ -50,6 +50,7 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	local enemy2=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)

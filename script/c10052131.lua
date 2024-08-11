@@ -39,6 +39,7 @@ function s.battlefilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local ally=Duel.GetMatchingGroup(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,nil)
 	local dam=1
@@ -57,7 +58,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(ag2,POS_FACEUP_DEFENSE)
 	local bg=ally:GetFirst()
 	for bg in aux.Next(ally) do
-	local e1=Effect.CreateEffect(e:GetHandler())
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_EXTRA_ATTACK)
 	e1:SetValue(1)

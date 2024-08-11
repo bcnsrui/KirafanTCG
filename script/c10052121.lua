@@ -51,9 +51,10 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dam=1
-	if e:GetHandler():IsStatus(STATUS_SPSUMMON_TURN) then dam=2 end
+	if c:IsStatus(STATUS_SPSUMMON_TURN) then dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local ag=enemy:GetFirst()
 	for ag in aux.Next(enemy) do

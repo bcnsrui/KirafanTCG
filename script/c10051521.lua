@@ -59,6 +59,7 @@ function s.chainlm(e,ep,tp)
 	return ep~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local sun=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,LOCATION_ONFIELD,0,c,ATTRIBUTE_LIGHT)
 	local moon=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,LOCATION_ONFIELD,0,c,ATTRIBUTE_DARK)

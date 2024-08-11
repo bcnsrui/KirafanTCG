@@ -41,6 +41,7 @@ function s.battlefilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)

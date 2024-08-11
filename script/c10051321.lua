@@ -81,6 +81,7 @@ function s.battlefilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=2
 	if Duel.IsExistingMatchingCard(s.battlefilter,tp,LOCATION_MZONE,0,1,c)
