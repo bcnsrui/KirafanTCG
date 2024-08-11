@@ -42,7 +42,7 @@ function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
 	if chk==0 then return Duel.IsExistingTarget(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,0,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectTarget(tp,Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetChainLimit(s.chainlm)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
@@ -68,6 +68,7 @@ function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(s.chainlm)
 end
 function s.damop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dam=1
 	if Duel.IsExistingMatchingCard(s.battlefilter,tp,LOCATION_MZONE,0,1,c)
