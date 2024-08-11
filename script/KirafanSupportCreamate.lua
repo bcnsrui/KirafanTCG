@@ -109,8 +109,9 @@ function Kirafan3.sghealop(e,tp,eg,ep,ev,re,r,rp)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	if c:IsCode(10054110) then sgheal=3
-	else sgheal=4 end	
-	if bhp-ahp<sgheal then sgheal=bhp-ahp end
+	else sgheal=4 end
+	if bhp<=ahp then sgheal=0
+	elseif bhp-ahp<sgheal then sgheal=bhp-ahp end
 	local bg=Duel.GetDecktopGroup(tp,sgheal)
 	if deckcount<sgheal then
 	local bg1=Duel.GetDecktopGroup(tp,deckcount)
@@ -168,7 +169,8 @@ function Kirafan3.allhealop(e,tp,eg,ep,ev,re,r,rp)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	if c:IsCode(10054110) then allheal=3
 	else allheal=2 end
-	if bhp-ahp<allheal then allheal=bhp-ahp end
+	if bhp<=ahp then allheal=0
+	elseif bhp-ahp<allheal then allheal=bhp-ahp end
 	local bg=Duel.GetDecktopGroup(tp,allheal)
 	if deckcount<allheal then
 	local bg1=Duel.GetDecktopGroup(tp,deckcount)

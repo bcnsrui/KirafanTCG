@@ -204,7 +204,8 @@ function Kirafan2.recoveryop2(e,tp,eg,ep,ev,re,r,rp)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	recoveryheal=2
-	if bhp-ahp<recoveryheal then recoveryheal=bhp-ahp end
+	if bhp<=ahp then recoveryheal=0
+	elseif bhp-ahp<recoveryheal then recoveryheal=bhp-ahp end
 	local bg=Duel.GetDecktopGroup(tp,recoveryheal)
 	if deckcount<recoveryheal then
 	local bg1=Duel.GetDecktopGroup(tp,deckcount)
