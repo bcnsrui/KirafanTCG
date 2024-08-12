@@ -35,6 +35,10 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,3))
 	return Duel.SetLP(tp,0) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)==0 then
+	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,6))
+	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,6))
+	return Duel.SetLP(tp,0) end
 	while Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0 
 	and not e:GetHandler():IsCode(10050110) do
 	shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
@@ -142,7 +146,8 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE) end end end
 	
-	if Duel.GetMatchingGroupCount(Kirafan.stcallfilter2,tp,LOCATION_HAND,0,nil)==0 
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1
+	and Duel.GetMatchingGroupCount(Kirafan.stcallfilter2,tp,LOCATION_HAND,0,nil)==0
 	and not e:GetHandler():IsCode(10050110) then
 	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.ConfirmCards(1-tp,sg)
