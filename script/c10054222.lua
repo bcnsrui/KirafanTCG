@@ -76,6 +76,7 @@ function s.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
 	
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
 	local ag=Duel.SelectMatchingCard(tp,s.battlefilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
 end

@@ -57,7 +57,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dotte=Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)
-	if dotte<=3 and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then
+	if dotte<=4 and Duel.GetMatchingGroupCount(nil,tp,LOCATION_GRAVE,0,nil)>0 
+	and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then
 	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
 	local last=g:GetFirst()
 	local tc=g:GetNext()
@@ -69,7 +70,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	else
 	dam=1
-	Duel.Damage(1-tp,dam,REASON_EFFECT) end	
+	Duel.Damage(1-tp,dam,REASON_EFFECT) end
 	local ag=enemy:GetFirst()
 	for ag in aux.Next(enemy) do
 	local g=ag:GetOverlayGroup()

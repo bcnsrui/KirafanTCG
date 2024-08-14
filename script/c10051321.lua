@@ -39,7 +39,7 @@ end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local cid=Duel.GetChainInfo(ev,CHAININFO_CHAIN_ID)
-	if Duel.GetFlagEffectLabel(tp,id)==cid or not Duel.SelectEffectYesNo(tp,c) then return end
+	if Duel.GetFlagEffectLabel(tp,id)==cid then return end
 	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 	Duel.RegisterFlagEffect(tp,id,RESET_CHAIN,0,1,cid)
 	Duel.Hint(HINT_CARD,0,id)

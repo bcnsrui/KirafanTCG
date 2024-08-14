@@ -35,7 +35,7 @@ function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 	and Duel.IsExistingTarget(Card.IsAttribute,tp,LOCATION_ONFIELD,0,2,nil,ATTRIBUTE_LIGHT)
 	and Duel.IsExistingTarget(Card.IsAttribute,tp,LOCATION_MZONE,0,1,nil,ATTRIBUTE_LIGHT) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
 	local g=Duel.SelectTarget(tp,Card.IsAttribute,tp,LOCATION_MZONE,0,1,1,nil,ATTRIBUTE_LIGHT)
 	Duel.SetChainLimit(aux.FALSE)
 end
@@ -84,6 +84,7 @@ function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
 	
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
 	local ag=Duel.SelectMatchingCard(tp,s.battlefilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
 end
