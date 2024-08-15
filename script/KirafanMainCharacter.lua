@@ -101,13 +101,14 @@ function Kirafan.drawcon(e,tp,eg,ep,ev,re,r,rp)
 	return (Duel.GetTurnCount()~=1 and Duel.GetTurnCount()~=2)
 end
 function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():GetDefense()<=9 then
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_DEFENSE)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e1:SetValue(1)
-	e:GetHandler():RegisterEffect(e1)
+	e:GetHandler():RegisterEffect(e1) end
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	if tp==Duel.GetTurnPlayer() then
