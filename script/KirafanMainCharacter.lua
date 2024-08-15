@@ -292,7 +292,7 @@ function Kirafan.extrarank(e,c)
 end
 
 --메인 캐릭터 기동효과
---1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정
+--1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7~8헛체인
 function Kirafan.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050111,1))
@@ -334,6 +334,20 @@ function Kirafan.MainCharacterSpEff(c)
 	e6:SetCondition(Kirafan.lifecon2)
 	e6:SetOperation(Kirafan.lifeop2)
 	c:RegisterEffect(e6)
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e7:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e7:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e7:SetRange(LOCATION_EMZONE)
+	e7:SetCondition(Kirafan.noeffectcon)
+	e7:SetTarget(Kirafan.noeffecttg)
+	e7:SetOperation(Kirafan.noeffectop)
+	c:RegisterEffect(e7)
+	local e8=e7:Clone()
+	e8:SetType(EFFECT_TYPE_QUICK_O)
+	e8:SetCode(EVENT_CHAINING)
+	e8:SetCondition(Kirafan.noeffectcon2)
+	c:RegisterEffect(e8)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
@@ -392,6 +406,18 @@ function Kirafan.lifeop2(e,tp,eg,ep,ev,re,r,rp)
 	local enemy=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
 	
 	if ally<enemy then Duel.SetLP(tp,5000) end
+end
+function Kirafan.noeffectcon(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_PSYCHIC+RACE_FAIRY)
+	return Duel.GetTurnPlayer()~=tp and #g==0
+end
+function Kirafan.noeffectcon2(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_PSYCHIC+RACE_FAIRY)
+	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp and #g==0
+end
+function Kirafan.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetChainLimit(aux.FALSE)
 end
 
 --리얼리스트의 시간
