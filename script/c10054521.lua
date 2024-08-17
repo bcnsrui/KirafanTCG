@@ -43,7 +43,7 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	if c and c:IsRelateToEffect(e) then
 	Kirafan3.ovallhealop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
-	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(s.NoEmzonefilter,tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)

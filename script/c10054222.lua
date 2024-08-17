@@ -42,7 +42,7 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c and c:IsRelateToEffect(e) then
 	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
-	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(s.NoEmzonefilter,tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)

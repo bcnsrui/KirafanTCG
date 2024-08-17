@@ -207,7 +207,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	local enemy=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
 	
-	if c:IsSetCard(0xc01) and tp==Duel.GetTurnPlayer() and ally>enemy then	
+	if c:IsSetCard(0xc01) and tp==Duel.GetTurnPlayer() and ally>=enemy then	
 	Duel.SetLP(tp,0)
 	else end
 end
