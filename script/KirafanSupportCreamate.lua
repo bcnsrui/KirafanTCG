@@ -55,11 +55,16 @@ function Kirafan3.triggercon(e)
 	and not tc:IsCode(10050110)
 end
 function Kirafan3.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if c:IsCode(10054511) then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+	and Duel.IsExistingTarget(Card.IsAttribute,tp,LOCATION_ONFIELD,0,2,nil,ATTRIBUTE_LIGHT) end
+	
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
+	
+	
 	Duel.SetChainLimit(aux.FALSE)
 end
-
 
 --(공통 효과에서 제외)일반 스킬 단일 회복 효과
 function Kirafan3.SpCreamateSgHeal(c)
