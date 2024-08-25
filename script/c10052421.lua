@@ -79,4 +79,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
+	if c:GetCounter(0xb04)>0 then
+	Duel.Damage(tp,1,REASON_EFFECT)
+	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
 end

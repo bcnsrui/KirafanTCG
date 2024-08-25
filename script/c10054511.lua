@@ -38,19 +38,18 @@ function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
 	and Duel.IsExistingTarget(Card.IsAttribute,tp,LOCATION_MZONE,0,1,nil,ATTRIBUTE_LIGHT) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
 	local g=Duel.SelectTarget(tp,Card.IsAttribute,tp,LOCATION_MZONE,0,1,1,nil,ATTRIBUTE_LIGHT)
-	Duel.SetChainLimit(aux.FALSE)
 end
 function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if c and tc and c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) then
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa05,1,REASON_EFFECT)
 	Kirafan3.ovsghealop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ATTACK_ALL)
 	e1:SetValue(1)
-	tc:RegisterEffect(e1) end
+	tc:RegisterEffect(e1)
 end
 function s.drawtrigger(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Draw(tp,1,REASON_EFFECT)
@@ -60,8 +59,11 @@ function s.battlefilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if chk==0 then return Duel.IsExistingMatchingCard(s.battlefilter,tp,LOCATION_MZONE,0,1,nil)
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa05,1)
 	
 	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
 	local last=g:GetFirst()

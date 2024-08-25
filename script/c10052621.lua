@@ -86,4 +86,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	ally:RegisterEffect(e1) end
+	if c:GetCounter(0xb04)>0 then
+	Duel.Damage(tp,1,REASON_EFFECT)
+	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
 end

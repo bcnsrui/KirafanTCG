@@ -6,6 +6,10 @@ function Kirafan2.CreamateCharacter(c)
 	c:EnableCounterPermit(0xb01)
 	c:EnableCounterPermit(0xb02)
 	c:EnableCounterPermit(0xb03)
+	c:EnableCounterPermit(0xb04)
+	c:EnableCounterPermit(0xb05)
+	c:EnableCounterPermit(0xb06)
+	c:EnableCounterPermit(0xc01)
 	c:EnableCounterPermit(0xc02)
 	Kirafan2.SummonCreamate(c)
 	Kirafan2.CreamateEff(c)
@@ -30,7 +34,7 @@ function Kirafan2.callcon(e,c)
     if c==nil then return true end
 	local tp=c:GetControler()
 	local tc=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	local CreamateLv=Duel.GetMatchingGroup(nil,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
+	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
     return (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and tc:GetDefense()-CreamateLv>=c:GetLevel())
 	or tc:IsCode(10050110)
 end
@@ -114,6 +118,7 @@ function Kirafan2.hpop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function Kirafan2.hp0con(e)
+	if e:GetHandler():GetCounter(0xb01)>0 then return e:GetHandler():GetDefense()<=1 end
 	return e:GetHandler():GetDefense()==0
 end
 function Kirafan2.hp0op(e,tp,eg,ep,ev,re,r,rp)
@@ -129,7 +134,7 @@ function Kirafan2.NoBtDestroy(e,tp,eg,ep,ev,re,r,rp,chk)
 	return true
 end
 
---데미지처리(1단일공격,2광역공격)
+--데미지처리(1단일공격,2광역공격,3무량공격,4카운터필요)
 function Kirafan2.CreamateBattle(c)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -145,6 +150,17 @@ function Kirafan2.CreamateBattle(c)
 	e2:SetCondition(Kirafan2.Allbattlecon)
 	e2:SetOperation(Kirafan2.Allbattleop)
     c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+    e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+    e3:SetCode(EFFECT_EXTRA_ATTACK)
+    e3:SetValue(100)
+    c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_CANNOT_ATTACK)
+	e4:SetCondition(Kirafan2.atkcon)
+	c:RegisterEffect(e4)
 end
 function Kirafan2.battlecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -154,14 +170,19 @@ function Kirafan2.battleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=c:GetBattleTarget()
 	local dam=c:GetAttack()
-	if enemy==nil then return end
+	if enemy==nil then else
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=enemy:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
 	tc=enemy:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	end end
+	if c:GetCounter(0xb04)>0 then
+	Duel.Damage(tp,1,REASON_EFFECT)
+	local hunger=c:GetOverlayGroup():RandomSelect(tp,1)
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	c:RemoveCounter(tp,0xc01,1,REASON_EFFECT)
 end
 function Kirafan2.Allbattlecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -170,7 +191,7 @@ end
 function Kirafan2.Allbattleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
-	if enemy==nil then return end
+	if enemy==nil then else
 	local dam=math.floor(c:GetAttack()/2)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local ag=enemy:GetFirst()
@@ -180,10 +201,18 @@ function Kirafan2.Allbattleop(e,tp,eg,ep,ev,re,r,rp)
 	else
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end end
+	end end end
+	if c:GetCounter(0xb04)>0 then
+	Duel.Damage(tp,1,REASON_EFFECT)
+	local hunger=c:GetOverlayGroup():RandomSelect(tp,1)
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	c:RemoveCounter(tp,0xc01,1,REASON_EFFECT)
+end
+function Kirafan2.atkcon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetCounter(0xc01)==0
 end
 
---리커버리
+--1리커버리,2수면,3고립
 function Kirafan2.Creamaterecovery(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -193,6 +222,20 @@ function Kirafan2.Creamaterecovery(c)
 	e1:SetCondition(Kirafan2.recoverycon2)
 	e1:SetOperation(Kirafan2.recoveryop2)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_UPDATE_ATTACK)
+	e2:SetCondition(Kirafan2.sleepcon)
+	e2:SetValue(-1)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCode(EFFECT_SET_ATTACK_FINAL)
+	e3:SetCondition(Kirafan2.alonecon)
+	e3:SetValue(Kirafan2.alonevalue)
+	c:RegisterEffect(e3)
 end
 function Kirafan2.recoverycon2(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetCounter(0xc02)>0
@@ -216,6 +259,15 @@ function Kirafan2.recoveryop2(e,tp,eg,ep,ev,re,r,rp)
 	else
 	local bg=Duel.GetDecktopGroup(tp,recoveryheal)
 	Duel.Overlay(c,bg) end
+end
+function Kirafan2.sleepcon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetCounter(0xb05)>0
+end
+function Kirafan2.alonecon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetCounter(0xb06)>0
+end
+function Kirafan2.alonevalue(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetBaseAttack()
 end
 
 --코스트

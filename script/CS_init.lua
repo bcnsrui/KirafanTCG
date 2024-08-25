@@ -14,3 +14,4 @@ end
 Duel.LoadScript("KirafanMainCharacter.lua")
 Duel.LoadScript("KirafanCreamate.lua")
 Duel.LoadScript("KirafanSupportCreamate.lua")
+Duel.LoadScript("KirafanAlcheCreamate.lua")

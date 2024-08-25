@@ -6,7 +6,7 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(10050113,4))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCost(Kirafan2.dottecost2)
+	e1:SetCost(Kirafan3.dottecost2)
 	e1:SetTarget(s.dottetg)
 	e1:SetOperation(s.dotteop)
 	c:RegisterEffect(e1)
@@ -34,12 +34,11 @@ end
 function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
-	Duel.SetChainLimit(aux.FALSE)
 end
 function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c and c:IsRelateToEffect(e) then
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa05,1,REASON_EFFECT)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	if deckcount==1 then
@@ -47,5 +46,5 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.Draw(tp,1,REASON_RULE)
 	else
-	Duel.Draw(tp,2,REASON_RULE) end end
+	Duel.Draw(tp,2,REASON_RULE) end
 end

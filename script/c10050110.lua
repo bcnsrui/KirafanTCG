@@ -19,6 +19,12 @@ function s.initial_effect(c)
 	e3:SetRange(LOCATION_EMZONE)
 	e3:SetOperation(s.handop4)
 	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(10050110,4))
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_EMZONE)
+	e4:SetOperation(s.handop5)
+	c:RegisterEffect(e4)
 end
 function s.handop2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
@@ -37,4 +43,8 @@ function s.handop4(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoExtraP(tc,tp,REASON_EFFECT)
 	else
 	Duel.SendtoExtraP(tc,1-tp,REASON_EFFECT) end
+end
+function s.handop5(e,tp,eg,ep,ev,re,r,rp)
+	local Alchemist=Duel.SelectMatchingCard(tp,Card.IsFacedown,tp,LOCATION_EXTRA,0,1,1,nil)
+	Duel.MoveToField(Alchemist:GetFirst(),tp,tp,LOCATION_FZONE,POS_FACEDOWN,true)
 end

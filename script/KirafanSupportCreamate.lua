@@ -3,10 +3,6 @@ Kirafan3={}
 
 --서포트 크리에메이트 유틸
 function Kirafan3.SpCreamateCharacter(c)
-	c:EnableCounterPermit(0xb01)
-	c:EnableCounterPermit(0xb02)
-	c:EnableCounterPermit(0xb03)
-	c:EnableCounterPermit(0xc02)
 	Kirafan3.SpCreamateEff(c)
 
 --	Kirafan3.HintUnit(c)
@@ -44,26 +40,20 @@ function Kirafan3.SpCreamateEff(c)
 	e6:SetCode(EVENT_CHAINING)
 	e6:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e6:SetCondition(Kirafan3.sghealcon2)
-	c:RegisterEffect(e6)
+	c:RegisterEffect(e6)	
 end
 function Kirafan3.triggercon(e)
 	local c=e:GetHandler()
 	local tp=e:GetHandlerPlayer()
 	local tc=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	local CreamateLv=Duel.GetMatchingGroup(nil,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
+	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
     return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and tc:GetDefense()-CreamateLv<c:GetLevel()
 	and not tc:IsCode(10050110)
 end
 function Kirafan3.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if c:IsCode(10054511) then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(Card.IsAttribute,tp,LOCATION_ONFIELD,0,2,nil,ATTRIBUTE_LIGHT) end
-	
+	local c=e:GetHandler()	
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
-	
-	
-	Duel.SetChainLimit(aux.FALSE)
 end
 
 --(공통 효과에서 제외)일반 스킬 단일 회복 효과
@@ -73,6 +63,7 @@ function Kirafan3.SpCreamateSgHeal(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(Kirafan3.sghealcost)
 	e1:SetTarget(Kirafan3.sghealtg)
 	e1:SetOperation(Kirafan3.sghealop)
 	c:RegisterEffect(e1)
@@ -87,6 +78,12 @@ function Kirafan3.SpCreamateSgHeal(c)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e3:SetCondition(Kirafan3.sghealcon2)
 	c:RegisterEffect(e3)
+end
+function Kirafan3.sghealcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return true end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa01,1)
 end
 function Kirafan3.sghealcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
@@ -103,13 +100,12 @@ function Kirafan3.sghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetChainLimit(aux.FALSE)
 end
 function Kirafan3.sghealop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
-	if c and tc and c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) then
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa01,1,REASON_EFFECT)
 	local ahp=tc:GetDefense()
 	local bhp=tc:GetBaseDefense()
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
@@ -127,14 +123,16 @@ function Kirafan3.sghealop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Overlay(tc,bg2)
 	else
 	local bg=Duel.GetDecktopGroup(tp,sgheal)
-	Duel.Overlay(tc,bg) end end 
+	Duel.Overlay(tc,bg) end
 end
 
+--(공통 효과에서 제외)일반 스킬 전체 회복 효과
 function Kirafan3.SpCreamateAllHeal(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050113,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(Kirafan3.allhealcost)
 	e1:SetTarget(Kirafan3.allhealtg)
 	e1:SetOperation(Kirafan3.allhealop)
 	c:RegisterEffect(e1)
@@ -150,6 +148,12 @@ function Kirafan3.SpCreamateAllHeal(c)
 	e3:SetCondition(Kirafan3.allhealcon2)
 	c:RegisterEffect(e3)
 end
+function Kirafan3.allhealcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return true end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa02,1)
+end
 function Kirafan3.allhealcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
 end
@@ -160,20 +164,19 @@ function Kirafan3.allhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.SetChainLimit(aux.FALSE)
 end
 function Kirafan3.allhealop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa02,1,REASON_EFFECT)
 	local hg=Duel.GetMatchingGroup(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,nil)
 	local tc=hg:GetFirst()
-	if not (c and c:IsRelateToEffect(e)) then return end
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	for tc in aux.Next(hg) do
 	local ahp=tc:GetDefense()
 	local bhp=tc:GetBaseDefense()
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
-	if c:IsCode(10054110) then allheal=3
+	if c:IsCode(10055113) then allheal=1
 	else allheal=2 end
 	if bhp<=ahp then allheal=0
 	elseif bhp-ahp<allheal then allheal=bhp-ahp end
@@ -189,13 +192,14 @@ function Kirafan3.allhealop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Overlay(tc,bg) end	end
 end
 
---(공통 효과에서 제외)일반 스킬 단일 회복 효과
+--(공통 효과에서 제외)일반 스킬 단일 오버힐 효과
 function Kirafan3.SpCreamateOvSgHeal(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050113,0))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(Kirafan3.sghealcost)
 	e1:SetTarget(Kirafan3.ovsghealtg)
 	e1:SetOperation(Kirafan3.ovsghealop)
 	c:RegisterEffect(e1)
@@ -217,13 +221,12 @@ function Kirafan3.ovsghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetChainLimit(aux.FALSE)
 end
 function Kirafan3.ovsghealop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
-	if c and tc and c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) then
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa01,1,REASON_EFFECT)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	if c:IsCode(10054520) then sgheal2=4
@@ -237,14 +240,16 @@ function Kirafan3.ovsghealop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Overlay(tc,bg2)
 	else
 	local bg=Duel.GetDecktopGroup(tp,sgheal2)
-	Duel.Overlay(tc,bg) end end
+	Duel.Overlay(tc,bg) end
 end
 
+--(공통 효과에서 제외)일반 스킬 전체 오버힐 효과
 function Kirafan3.SpCreamateOvAllHeal(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050113,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(Kirafan3.allhealcost)
 	e1:SetTarget(Kirafan3.ovallhealtg)
 	e1:SetOperation(Kirafan3.ovallhealop)
 	c:RegisterEffect(e1)
@@ -264,14 +269,13 @@ function Kirafan3.ovallhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.SetChainLimit(aux.FALSE)
 end
 function Kirafan3.ovallhealop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	main:RemoveCounter(tp,0xa02,1,REASON_EFFECT)
 	local hg=Duel.GetMatchingGroup(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,nil)
 	local tc=hg:GetFirst()
-	if not (c and c:IsRelateToEffect(e)) then return end
-	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	for tc in aux.Next(hg) do
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
@@ -287,4 +291,111 @@ function Kirafan3.ovallhealop(e,tp,eg,ep,ev,re,r,rp)
 	else
 	local bg=Duel.GetDecktopGroup(tp,allheal2)
 	Duel.Overlay(tc,bg) end	end
+end
+
+--코스트
+function Kirafan3.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
+	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa05,1)
+	
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+end
+
+function Kirafan3.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
+	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa05,1)
+	
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last2=g2:GetFirst()
+	local tc2=g2:GetNext()
+	for tc2 in aux.Next(g2) do
+		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
+	end
+	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
+end
+
+function Kirafan3.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
+	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa05,1)
+	
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last2=g2:GetFirst()
+	local tc2=g2:GetNext()
+	for tc2 in aux.Next(g2) do
+		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
+	end
+	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
+	local g3=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last3=g3:GetFirst()
+	local tc3=g3:GetNext()
+	for tc3 in aux.Next(g3) do
+		if tc3:GetSequence()<last3:GetSequence() then last3=tc3 end
+	end
+	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
+end
+
+function Kirafan3.dottecost4(e,tp,eg,ep,ev,re,r,rp,chk)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,4,nil,tp) end
+	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	main:AddCounter(0xa05,1)
+	
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last2=g2:GetFirst()
+	local tc2=g2:GetNext()
+	for tc2 in aux.Next(g2) do
+		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
+	end
+	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
+	local g3=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last3=g3:GetFirst()
+	local tc3=g3:GetNext()
+	for tc3 in aux.Next(g3) do
+		if tc3:GetSequence()<last3:GetSequence() then last3=tc3 end
+	end
+	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
+	local g4=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last4=g4:GetFirst()
+	local tc4=g4:GetNext()
+	for tc4 in aux.Next(g4) do
+		if tc4:GetSequence()<last4:GetSequence() then last4=tc4 end
+	end
+	Duel.Remove(last4,POS_FACEUP,REASON_EFFECT)
 end
