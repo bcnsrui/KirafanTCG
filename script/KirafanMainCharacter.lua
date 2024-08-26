@@ -32,7 +32,7 @@ function Kirafan.DuelStartMainCharacter(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan.battlezonefilter(c)
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_BEASTWARRIOR) and c:IsLevelBelow(2)
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(2)
 end
 function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
@@ -52,9 +52,9 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
 	Duel.Draw(tp,5,REASON_RULE) end
-	local fg1=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_PSYCHIC)
-	local fg2=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
-	local fg3=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_BEASTWARRIOR)
+	local fg1=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_ZOMBIE)
+	local fg2=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
+	local fg3=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
 	local fg4=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_SPELLCASTER)
 	local fg5=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_WARRIOR)
 	Duel.SendtoDeck(fg1,nil,0,REASON_RULE)
@@ -142,11 +142,11 @@ function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan.stcallfilter(c,e,tp)
 	local cost=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_BEASTWARRIOR) and c:IsLevelBelow(cost)
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(cost)
 end
 function Kirafan.stcallfilter2(c)
 	local cost=Duel.GetMatchingGroup(nil,c:GetControler(),LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_BEASTWARRIOR) and c:IsLevelBelow(cost)
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(cost)
 end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(tp,1,REASON_RULE)
@@ -187,7 +187,7 @@ function Kirafan.battlecon(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan.battleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local btcreamate=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,LOCATION_MZONE,0,nil)
+	local btcreamate=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local ag=btcreamate:GetFirst()
 	for ag in aux.Next(btcreamate) do
 	ag:AddCounter(0xc01,1) end
@@ -208,9 +208,6 @@ end
 function Kirafan.TurnPositionfilter(c)
 	return c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
 end
-function Kirafan.NoEmzonefilter(c)
-	return not c:IsLocation(LOCATION_EMZONE)
-end
 function Kirafan.NoFzonefilter(c)
 	return not c:IsLocation(LOCATION_FZONE)
 end
@@ -228,7 +225,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	
 	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
 	
-	local enemy2=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,LOCATION_MZONE,0,nil)
+	local enemy2=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local cg=enemy2:GetFirst()
 	for cg in aux.Next(enemy2) do
 	cg:RemoveCounter(tp,0xb01,1,REASON_EFFECT)
@@ -397,9 +394,9 @@ function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan.handop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	local fg1=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_PSYCHIC)
-	local fg2=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
-	local fg3=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_BEASTWARRIOR)
+	local fg1=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_ZOMBIE)
+	local fg2=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
+	local fg3=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
 	local fg4=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_SPELLCASTER)
 	local fg5=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_WARRIOR)
 	Duel.SendtoDeck(fg1,nil,0,REASON_RULE)
@@ -451,11 +448,11 @@ function Kirafan.lifeop2(e,tp,eg,ep,ev,re,r,rp)
 	if ally<enemy then Duel.SetLP(tp,5000) end
 end
 function Kirafan.noeffectcon(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
+	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
 	return Duel.GetTurnPlayer()~=tp and #g==0
 end
 function Kirafan.noeffectcon2(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
+	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
 	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp and #g==0
 end
 function Kirafan.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)

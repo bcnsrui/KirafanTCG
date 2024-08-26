@@ -190,7 +190,7 @@ function Kirafan2.Allbattlecon(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan2.Allbattleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local enemy=Duel.GetMatchingGroup(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,nil)
+	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	if enemy==nil then else
 	local dam=math.floor(c:GetAttack()/2)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)

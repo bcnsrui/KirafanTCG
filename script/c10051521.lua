@@ -7,44 +7,26 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
-	e5:SetCondition(s.damcon)
+	e5:SetCondition(Kirafan6.damcon)
 	e5:SetCost(Kirafan2.dottecost2)
-	e5:SetTarget(s.damtg)
+	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(10050111,6))
-	e6:SetType(EFFECT_TYPE_QUICK_O)
-	e6:SetCode(EVENT_FREE_CHAIN)
-	e6:SetRange(LOCATION_MZONE)
-	e6:SetCondition(s.damcon)
-	e6:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingTarget(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.SetChainLimit(aux.FALSE) end)
-	c:RegisterEffect(e6)
+	Kirafan6.NoDotteEffcon2(c)
 end
-function s.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and e:GetHandler():GetCounter(0xb03)==0 and not e:GetHandler():IsDefensePos()
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetTurnPlayer()==tp
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp)
+function s.lightfilter(c)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
 end
-function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
-	if chk==0 then return Duel.IsExistingTarget(Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,Kirafan.NoEmzonefilter,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetChainLimit(s.chainlm)
-end
-function s.chainlm(e,ep,tp)
-	return ep~=tp
+function s.darkfilter(c)
+	return c:IsAttribute(ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local sun=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,LOCATION_ONFIELD,0,c,ATTRIBUTE_LIGHT)
-	local moon=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,LOCATION_ONFIELD,0,c,ATTRIBUTE_DARK)
-	local sun1=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,0,LOCATION_ONFIELD,nil,ATTRIBUTE_LIGHT)
-	local moon1=Duel.GetMatchingGroupCount(Card.IsAttribute,tp,0,LOCATION_ONFIELD,nil,ATTRIBUTE_DARK)
+	local sun=Duel.GetMatchingGroupCount(s.lightfilter,tp,LOCATION_ONFIELD,0,c)
+	local moon=Duel.GetMatchingGroupCount(s.darkfilter,tp,LOCATION_ONFIELD,0,c)
+	local sun1=Duel.GetMatchingGroupCount(s.lightfilter,tp,0,LOCATION_ONFIELD,nil)
+	local moon1=Duel.GetMatchingGroupCount(s.darkfilter,tp,0,LOCATION_ONFIELD,nil)
 	if sun+moon>0 and sun1+moon1>0 then dam=4
 	elseif sun1+moon1>0 then dam=3
 	elseif sun+moon>0 then dam=2

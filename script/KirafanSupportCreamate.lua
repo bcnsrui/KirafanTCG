@@ -33,13 +33,13 @@ function Kirafan3.SpCreamateEff(c)
 	local e5=e4:Clone()
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e5:SetCondition(Kirafan3.sghealcon)
+	e5:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e5)
 	local e6=e4:Clone()
 	e6:SetType(EFFECT_TYPE_QUICK_O)
 	e6:SetCode(EVENT_CHAINING)
 	e6:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e6:SetCondition(Kirafan3.sghealcon2)
+	e6:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e6)	
 end
 function Kirafan3.triggercon(e)
@@ -70,35 +70,28 @@ function Kirafan3.SpCreamateSgHeal(c)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(Kirafan3.sghealcon)
+	e2:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(Kirafan3.sghealcon2)
+	e3:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e3)
 end
 function Kirafan3.sghealcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return true end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa01,1)
-end
-function Kirafan3.sghealcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp
-end
-function Kirafan3.sghealcon2(e,tp,eg,ep,ev,re,r,rp)
-	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp
 end
 function Kirafan3.Nohealfilter(c)
 	return not c:IsLocation(LOCATION_EMZONE) and c:GetCounter(0xb02)==0
 end
 function Kirafan3.sghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,0))
 	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function Kirafan3.sghealop(e,tp,eg,ep,ev,re,r,rp)
@@ -139,31 +132,24 @@ function Kirafan3.SpCreamateAllHeal(c)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(Kirafan3.allhealcon)
+	e2:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(Kirafan3.allhealcon2)
+	e3:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e3)
 end
 function Kirafan3.allhealcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return true end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa02,1)
 end
-function Kirafan3.allhealcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp
-end
-function Kirafan3.allhealcon2(e,tp,eg,ep,ev,re,r,rp)
-	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp
-end
 function Kirafan3.allhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function Kirafan3.allhealop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -206,20 +192,19 @@ function Kirafan3.SpCreamateOvSgHeal(c)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(Kirafan3.sghealcon)
+	e2:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(Kirafan3.sghealcon2)
+	e3:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e3)
 end
 function Kirafan3.ovsghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,0))
 	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function Kirafan3.ovsghealop(e,tp,eg,ep,ev,re,r,rp)
@@ -256,19 +241,18 @@ function Kirafan3.SpCreamateOvAllHeal(c)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(Kirafan3.allhealcon)
+	e2:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(Kirafan3.allhealcon2)
+	e3:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e3)
 end
 function Kirafan3.ovallhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function Kirafan3.ovallhealop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -296,8 +280,9 @@ end
 --코스트
 function Kirafan3.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
-	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
+	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
+	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
 	
@@ -312,8 +297,9 @@ end
 
 function Kirafan3.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
-	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
+	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
+	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
 	
@@ -335,8 +321,9 @@ end
 
 function Kirafan3.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
-	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
+	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
+	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
 	
@@ -365,8 +352,9 @@ end
 
 function Kirafan3.dottecost4(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,4,nil,tp) end
-	if e:GetHandler():IsRace(RACE_PSYCHIC) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
+	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,4,nil,tp) end
+	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
 	

@@ -8,57 +8,61 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCost(s.dottecost3)
-	e1:SetTarget(s.dottetg)
+	e1:SetTarget(Kirafan6.nospdamtg)
 	e1:SetOperation(s.dotteop)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(s.dottecon)
+	e2:SetCondition(Kirafan6.dottecon)
 	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(s.dottecon2)
+	e3:SetCondition(Kirafan6.dottecon2)
 	c:RegisterEffect(e3)
-end
-function s.dottecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp
-end
-function s.dottecon2(e,tp,eg,ep,ev,re,r,rp)
-	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp
-end
-function s.NoEmzonefilter(c)
-	return not c:IsLocation(LOCATION_EMZONE)
-end
-function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(s.NoEmzonefilter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	main:RemoveCounter(tp,0xa05,1,REASON_EFFECT)
-	local g=Duel.GetMatchingGroup(s.NoEmzonefilter,tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(2)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e1)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+		e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_NO_TURN_RESET)
+		e2:SetCode(EVENT_DAMAGE_STEP_END)
+		e2:SetRange(LOCATION_MZONE)
+		e2:SetCountLimit(1)
+		e2:SetCondition(s.chiyacon)
+		e2:SetOperation(s.chiyaop)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+		tc:RegisterEffect(e2)
 	end
 end
-
-function s.battlefilter(c)
-	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
+function s.chiyacon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()==tp
 end
+function s.chiyaop(e,tp,eg,ep,ev,re,r,rp)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetValue(-2)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e:GetHandler():RegisterEffect(e1)
+end
+
 function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(s.battlefilter,tp,LOCATION_MZONE,0,1,nil)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
+	Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,nil)
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
@@ -86,6 +90,6 @@ function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
 	
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
-	local ag=Duel.SelectMatchingCard(tp,s.battlefilter,tp,LOCATION_MZONE,0,1,1,nil)
+	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
 end

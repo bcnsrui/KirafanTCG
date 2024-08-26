@@ -14,7 +14,7 @@ function s.initial_effect(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return true end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE)
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa03,1)
@@ -23,15 +23,14 @@ function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetTurnPlayer()==tp
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
 end
-function s.NoEmzonefilter(c)
+function s.lffilter(c)
 	return c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-	and Duel.IsExistingTarget(s.NoEmzonefilter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,s.NoEmzonefilter,tp,LOCATION_MZONE,0,1,1,nil)
+	if chk==0 then return Duel.IsExistingTarget(s.lffilter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,2))
+	local g=Duel.SelectTarget(tp,s.lffilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
