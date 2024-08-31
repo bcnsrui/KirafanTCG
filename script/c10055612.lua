@@ -34,16 +34,5 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	main:RemoveCounter(tp,0xa03,1,REASON_EFFECT)
 	local tc=Duel.GetFirstTarget()
 	if tc:GetCounter(0xb02)==0 then tc:AddCounter(0xb02,1) else end
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_PHASE+PHASE_BATTLE)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetCountLimit(1)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e2:SetOperation(s.dottetrigger)
-	c:RegisterEffect(e2)
-end
-function s.dottetrigger(e,tp,eg,ep,ev,re,r,rp)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Kirafan6.guagetrigger(c)
 end

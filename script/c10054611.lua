@@ -37,16 +37,5 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if tc:GetCounter(0xb05)==0 then tc:AddCounter(0xb05,2)
 	elseif tc:GetCounter(0xb05)==1 then tc:AddCounter(0xb05,1)
 	else end
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_PHASE+PHASE_BATTLE)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetCountLimit(1)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e2:SetOperation(s.drawtrigger)
-	c:RegisterEffect(e2)
-end
-function s.drawtrigger(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
+	Kirafan6.drawtrigger(c)
 end

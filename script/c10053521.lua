@@ -51,11 +51,5 @@ function s.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
 	main:AddCounter(0xa05,1)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end

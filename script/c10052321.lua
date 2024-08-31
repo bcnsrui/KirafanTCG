@@ -19,21 +19,14 @@ function s.initial_effect(c)
 	Kirafan6.NoDotteEffcon2(c)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-    Duel.DiscardDeck(tp,1,REASON_EFFECT)
+    Duel.DiscardDeck(tp,2,REASON_EFFECT)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dotte=Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)
 	if dotte>0 and dotte<=3 and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then
-	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	dam=2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	else
@@ -47,8 +40,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

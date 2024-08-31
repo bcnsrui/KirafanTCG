@@ -34,4 +34,5 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	main:RemoveCounter(tp,0xa03,1,REASON_EFFECT)
 	local tc=Duel.GetFirstTarget()
 	if tc:GetCounter(0xb03)==0 then tc:AddCounter(0xb03,1) else end
+	Kirafan6.guagetrigger(c)
 end

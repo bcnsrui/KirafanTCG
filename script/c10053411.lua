@@ -21,11 +21,6 @@ function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,1,nil)
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
 end

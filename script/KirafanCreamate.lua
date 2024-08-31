@@ -178,10 +178,7 @@ function Kirafan2.battleop(e,tp,eg,ep,ev,re,r,rp)
 	tc=enemy:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	local hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 	c:RemoveCounter(tp,0xc01,1,REASON_EFFECT)
 end
 function Kirafan2.Allbattlecon(e,tp,eg,ep,ev,re,r,rp)
@@ -202,10 +199,7 @@ function Kirafan2.Allbattleop(e,tp,eg,ep,ev,re,r,rp)
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	local hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 	c:RemoveCounter(tp,0xc01,1,REASON_EFFECT)
 end
 function Kirafan2.atkcon(e,tp,eg,ep,ev,re,r,rp)
@@ -274,89 +268,29 @@ end
 function Kirafan2.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function Kirafan2.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last2=g2:GetFirst()
-	local tc2=g2:GetNext()
-	for tc2 in aux.Next(g2) do
-		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
-	end
-	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function Kirafan2.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last2=g2:GetFirst()
-	local tc2=g2:GetNext()
-	for tc2 in aux.Next(g2) do
-		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
-	end
-	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
-	local g3=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last3=g3:GetFirst()
-	local tc3=g3:GetNext()
-	for tc3 in aux.Next(g3) do
-		if tc3:GetSequence()<last3:GetSequence() then last3=tc3 end
-	end
-	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function Kirafan2.dottecost4(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,4,nil,tp) end
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last2=g2:GetFirst()
-	local tc2=g2:GetNext()
-	for tc2 in aux.Next(g2) do
-		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
-	end
-	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
-	local g3=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last3=g3:GetFirst()
-	local tc3=g3:GetNext()
-	for tc3 in aux.Next(g3) do
-		if tc3:GetSequence()<last3:GetSequence() then last3=tc3 end
-	end
-	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
-	local g4=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last4=g4:GetFirst()
-	local tc4=g4:GetNext()
-	for tc4 in aux.Next(g4) do
-		if tc4:GetSequence()<last4:GetSequence() then last4=tc4 end
-	end
-	Duel.Remove(last4,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end

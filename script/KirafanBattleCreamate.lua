@@ -55,6 +55,68 @@ function Kirafan6.dottecon2(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp
 end
 
+--자신 돗테오키 게이지 줄이기
+function Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+end
+--상대 돗테오키 게이지 줄이기
+function Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,nil)
+	if #g>0 then
+	local last=g:GetFirst()
+	local tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()<last:GetSequence() then last=tc end
+	end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
+end
+
+--배고픔시 데미지
+function Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():GetCounter(0xb04)>0 then
+	Duel.Damage(tp,1,REASON_EFFECT)
+	hunger=e:GetHandler():GetOverlayGroup():RandomSelect(tp,1)
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+end
+
+--드로우 트리거
+function Kirafan6.drawtrigger(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e1:SetRange(LOCATION_SZONE)
+	e1:SetCountLimit(1)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e1:SetOperation(Kirafan6.drawtriggerop)
+	c:RegisterEffect(e1)
+end
+function Kirafan6.drawtriggerop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Draw(tp,1,REASON_EFFECT)
+end
+
+--돗테오키 트리거
+function Kirafan6.guagetrigger(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e1:SetRange(LOCATION_SZONE)
+	e1:SetCountLimit(1)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e1:SetOperation(Kirafan6.guagetriggerop)
+	c:RegisterEffect(e1)
+end
+function Kirafan6.guagetriggerop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+end
+
 --돗테오키 발동안하기
 function Kirafan6.NoDotteEffcon1(c)
 	local e1=Effect.CreateEffect(c)

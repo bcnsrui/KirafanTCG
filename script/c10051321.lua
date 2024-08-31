@@ -2,12 +2,14 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Kirafan2.CreamateCharacter(c)
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_CHAIN_SOLVING)
+	e1:SetType(EFFECT_TYPE_QUICK_F)
+	e1:SetCode(EVENT_CHAINING)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e1:SetCountLimit(1)
 	e1:SetCondition(s.negcon)
-	e1:SetCost(Kirafan2.dottecost2)
+	e1:SetCost(s.negcost)
+	e1:SetTarget(s.negtg)
 	e1:SetOperation(s.negop)
 	c:RegisterEffect(e1)
 	local e5=Effect.CreateEffect(c)
@@ -25,34 +27,20 @@ function s.initial_effect(c)
 end
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsRace(RACE_ZOMBIE|RACE_FIEND)
-	and Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and e:GetHandler():GetFlagEffect(id)==0
+	and Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil)
 end
+function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+end
+function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
+end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local cid=Duel.GetChainInfo(ev,CHAININFO_CHAIN_ID)
-	if Duel.GetFlagEffectLabel(tp,id)==cid then return end
-	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
-	Duel.RegisterFlagEffect(tp,id,RESET_CHAIN,0,1,cid)
-	Duel.Hint(HINT_CARD,0,id)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last2=g2:GetFirst()
-	local tc2=g2:GetNext()
-	for tc2 in aux.Next(g2) do
-		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
-	end
-	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
-	local rc=re:GetHandler()
-	if Duel.NegateEffect(ev) and rc:IsRelateToEffect(re) then
-		Duel.Destroy(rc,REASON_EFFECT,LOCATION_REMOVED)
-	end
+	Duel.NegateActivation(ev)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -70,8 +58,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

@@ -21,7 +21,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetTurnPlayer()==tp
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
+	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
 end
 function s.lffilter(c)
 	return c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
@@ -34,8 +34,10 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	main:RemoveCounter(tp,0xa03,1,REASON_EFFECT)
 	Duel.ChangePosition(tc,POS_FACEUP_ATTACK)
+	Kirafan6.guagetrigger(c)
 end

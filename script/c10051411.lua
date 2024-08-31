@@ -24,13 +24,8 @@ function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,1,nil)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -43,8 +38,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

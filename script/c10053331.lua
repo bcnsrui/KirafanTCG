@@ -18,14 +18,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	local yasuna=Duel.CreateToken(tp,10053332)
 	Duel.SpecialSummon(yasuna,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
 end

@@ -15,11 +15,11 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost3)
 	e5:SetTarget(Kirafan6.nodamtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon3(c)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
@@ -50,8 +50,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
 	Duel.Draw(tp,1,REASON_EFFECT)
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

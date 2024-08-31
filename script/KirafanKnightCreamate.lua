@@ -4,7 +4,7 @@ Kirafan5={}
 --나이트 크리에메이트 유틸
 function Kirafan5.KnCreamateCharacter(c)
 	Kirafan2.CreamateCharacter(c)
-	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsRace,RACE_FAIRY),LOCATION_MZONE)
+--	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsRace,RACE_FAIRY),LOCATION_MZONE)
 end
 
 --통상 공격 유도
@@ -61,10 +61,7 @@ function Kirafan5.Knightdamop1(e,tp,eg,ep,ev,re,r,rp)
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --나이트 2뎀 돗테오키
@@ -93,8 +90,5 @@ function Kirafan5.Knightdamop2(e,tp,eg,ep,ev,re,r,rp)
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

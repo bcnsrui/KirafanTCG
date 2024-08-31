@@ -32,9 +32,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	local enemy2=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
-	local mc=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	local dam=2
-	if mc:IsSetCard(0xc01) and ally>enemy2 then dam=3 end
+	local dam=1
+	if ally>enemy2 then dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local ag=enemy:GetFirst()
 	for ag in aux.Next(enemy) do
@@ -44,8 +43,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

@@ -44,8 +44,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
 	Duel.ChangePosition(ag,POS_FACEUP_DEFENSE)
 	c:AddCounter(0xc01,1) end
-	if c:GetCounter(0xb04)>0 then
-	Duel.Damage(tp,1,REASON_EFFECT)
-	hunger=c:GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

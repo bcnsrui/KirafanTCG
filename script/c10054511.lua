@@ -44,9 +44,6 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	tc:RegisterEffect(e1)
 end
-function s.drawtrigger(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
-end
 
 function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
@@ -55,29 +52,9 @@ function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xa05,1)
-	
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last=g:GetFirst()
-	local tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()<last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	local g2=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last2=g2:GetFirst()
-	local tc2=g2:GetNext()
-	for tc2 in aux.Next(g2) do
-		if tc2:GetSequence()<last2:GetSequence() then last2=tc2 end
-	end
-	Duel.Remove(last2,POS_FACEUP,REASON_EFFECT)
-	local g3=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
-	local last3=g3:GetFirst()
-	local tc3=g3:GetNext()
-	for tc3 in aux.Next(g3) do
-		if tc3:GetSequence()<last3:GetSequence() then last3=tc3 end
-	end
-	Duel.Remove(last3,POS_FACEUP,REASON_EFFECT)
-	
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)

@@ -20,5 +20,5 @@ function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.knconfilter,1,nil,tp) and Duel.GetTurnPlayer()~=tp
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.DiscardDeck(tp,1,REASON_EFFECT)
+    Duel.DiscardDeck(tp,2,REASON_EFFECT)
 end
