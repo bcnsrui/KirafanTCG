@@ -4,7 +4,7 @@ Kirafan5={}
 --나이트 크리에메이트 유틸
 function Kirafan5.KnCreamateCharacter(c)
 	Kirafan2.CreamateCharacter(c)
---	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsRace,RACE_FAIRY),LOCATION_MZONE)
+	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsRace,RACE_FAIRY),LOCATION_MZONE)
 end
 
 --통상 공격 유도
