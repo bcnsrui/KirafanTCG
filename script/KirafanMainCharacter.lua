@@ -3,12 +3,6 @@ Kirafan={}
 
 --메인 캐릭터 유틸
 function Kirafan.MainCharacter(c)
-	c:EnableCounterPermit(0xa01)
-	c:EnableCounterPermit(0xa02)
-	c:EnableCounterPermit(0xa03)
-	c:EnableCounterPermit(0xa04)
-	c:EnableCounterPermit(0xa05)
-	c:EnableCounterPermit(0xa06)
 	c:EnableCounterPermit(0xc03)
 	Kirafan.DuelStartMainCharacter(c)
 	Kirafan.DrawStMainCharacter(c)
@@ -141,18 +135,20 @@ function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
 end
 function Kirafan.stcallfilter(c,e,tp)
-	local cost=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(cost)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(main)
 end
 function Kirafan.stcallfilter2(c)
-	local cost=Duel.GetMatchingGroup(nil,c:GetControler(),LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(cost)
+	local main=Duel.GetMatchingGroup(nil,c:GetControler(),LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(main)
 end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(tp,1,REASON_RULE)
-	if (Duel.GetTurnCount()~=1 and Duel.GetTurnCount()~=2) and not e:GetHandler():IsCode(10050110) then
+	local AlchemistDeck=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):GetCount()
+	if Duel.GetTurnCount()>2 and AlchemistDeck>0 and not e:GetHandler():IsCode(10050110) then
 	local Alchemist=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):RandomSelect(1-tp,1):GetFirst()
 	Duel.MoveToField(Alchemist,1-tp,1-tp,LOCATION_FZONE,POS_FACEDOWN,true) end
+	
 	if Duel.GetTurnCount()>2 then
 	if Duel.SelectYesNo(tp,aux.Stringid(10050111,0)) then
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND+LOCATION_MZONE,0,0,1,e:GetHandler())
@@ -221,7 +217,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	if tp==Duel.GetTurnPlayer() and not e:GetHandler():IsCode(10050110) then
 	local ag2=Duel.GetMatchingGroup(Card.IsFacedown,tp,LOCATION_FZONE,0,nil)
 	if #ag2==1 then Duel.Draw(tp,1,REASON_RULE)
-	Duel.Remove(ag2,POS_FACEUP,REASON_RULE) end end
+	Duel.SendtoDeck(ag2,nil,-2,REASON_RULE) end end
 	
 	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
 	
@@ -241,7 +237,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	if tp==Duel.GetTurnPlayer() and g>5 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,2))
 	local tg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,g-5,g-5,nil)
-	Duel.Remove(tg,POS_FACEUP,REASON_RULE) 
+	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
 	else end
 	
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
@@ -332,7 +328,7 @@ function Kirafan.extrarank(e,c)
 end
 
 --메인 캐릭터 기동효과
---1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7~8헛체인,9알케제외
+--1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인
 function Kirafan.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050111,1))
@@ -375,19 +371,14 @@ function Kirafan.MainCharacterSpEff(c)
 	e6:SetOperation(Kirafan.lifeop2)
 	c:RegisterEffect(e6)
 	local e7=Effect.CreateEffect(c)
-	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e7:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e7:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e7:SetType(EFFECT_TYPE_QUICK_O)
+	e7:SetCode(EVENT_FREE_CHAIN)
+	e7:SetHintTiming(TIMING_BATTLE_START+TIMING_BATTLE_STEP_END+TIMING_CHAIN_END+TIMING_DAMAGE_CAL)
+	e7:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
 	e7:SetRange(LOCATION_EMZONE)
-	e7:SetCondition(Kirafan.noeffectcon)
+	e7:SetCondition(Kirafan6.spcreamatecon)
 	e7:SetTarget(Kirafan.noeffecttg)
-	e7:SetOperation(Kirafan.noeffectop)
 	c:RegisterEffect(e7)
-	local e8=e7:Clone()
-	e8:SetType(EFFECT_TYPE_QUICK_O)
-	e8:SetCode(EVENT_CHAINING)
-	e8:SetCondition(Kirafan.noeffectcon2)
-	c:RegisterEffect(e8)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
@@ -447,16 +438,12 @@ function Kirafan.lifeop2(e,tp,eg,ep,ev,re,r,rp)
 	
 	if ally<enemy then Duel.SetLP(tp,5000) end
 end
-function Kirafan.noeffectcon(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
-	return Duel.GetTurnPlayer()~=tp and #g==0
-end
-function Kirafan.noeffectcon2(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
-	return rp~=tp and Duel.IsBattlePhase() and Duel.GetTurnPlayer()~=tp and #g==0
-end
 function Kirafan.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+	local c=e:GetHandler()
+	local code=c:GetOriginalCode()
+	if chk==0 then return c:GetFlagEffect(code)==0 end
+	c:RegisterFlagEffect(code,RESET_EVENT|RESETS_STANDARD|RESET_CHAIN,0,1)
+	Duel.SetChainLimit(Kirafan3.noeffectchainlm)
 end
 
 --리얼리스트의 시간

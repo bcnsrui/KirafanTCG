@@ -18,16 +18,11 @@ function s.initial_effect(c)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
-	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e2:SetCondition(Kirafan6.dottecon)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_CAL)
+	e2:SetCondition(Kirafan6.spcreamatecon)
 	c:RegisterEffect(e2)
-	local e3=e1:Clone()
-	e3:SetType(EFFECT_TYPE_QUICK_O)
-	e3:SetCode(EVENT_CHAINING)
-	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e3:SetCondition(Kirafan6.dottecon2)
-	c:RegisterEffect(e3)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -48,8 +43,6 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
-	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	main:RemoveCounter(tp,0xa05,1,REASON_EFFECT)
 	local ahp=tc:GetDefense()
 	local bhp=tc:GetBaseDefense()
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
@@ -70,9 +63,9 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
-	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
-	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)	
-	main:AddCounter(0xa05,1)
+	local c=e:GetHandler()
+	if chk==0 then return c:GetCounter(0xb03)==0 and not c:IsDefensePos() and
+	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
+	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 end
