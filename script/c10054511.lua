@@ -29,11 +29,7 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	Kirafan3.ovsghealop(e,tp,eg,ep,ev,re,r,rp)
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_ATTACK_ALL)
-	e1:SetValue(1)
-	tc:RegisterEffect(e1)
+	if tc:GetCounter(0xc04)==0 then tc:AddCounter(0xc04,1) else end
 end
 
 function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)

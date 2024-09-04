@@ -11,6 +11,7 @@ function Kirafan2.CreamateCharacter(c)
 	c:EnableCounterPermit(0xb06)
 	c:EnableCounterPermit(0xc01)
 	c:EnableCounterPermit(0xc02)
+	c:EnableCounterPermit(0xc04)
 	Kirafan2.SummonCreamate(c)
 	Kirafan2.CreamateEff(c)
 	Kirafan2.CreamateBattle(c)
@@ -134,7 +135,7 @@ function Kirafan2.NoBtDestroy(e,tp,eg,ep,ev,re,r,rp,chk)
 	return true
 end
 
---데미지처리(1단일공격,2광역공격,3무량공격,4카운터필요)
+--데미지처리(1단일공격,2광역공격,3무량공격,4카운터필요,5히로)
 function Kirafan2.CreamateBattle(c)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -161,10 +162,17 @@ function Kirafan2.CreamateBattle(c)
 	e4:SetCode(EFFECT_CANNOT_ATTACK)
 	e4:SetCondition(Kirafan2.atkcon)
 	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+    e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+    e5:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
+	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e5:SetCondition(Kirafan2.battlecon2)
+	e5:SetOperation(Kirafan2.battleop2)
+    c:RegisterEffect(e5)
 end
 function Kirafan2.battlecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return not c:IsSetCard(0xa02) and Duel.GetAttacker():IsControler(tp)
+	return not c:IsSetCard(0xa02) and Duel.GetAttacker():IsControler(tp) and c:GetCounter(0xc04)==0
 end
 function Kirafan2.battleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -204,6 +212,28 @@ function Kirafan2.Allbattleop(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan2.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetCounter(0xc01)==0
+end
+function Kirafan2.battlecon2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return not c:IsSetCard(0xa02) and Duel.GetAttacker():IsControler(tp) and c:GetCounter(0xc04)>0
+end
+function Kirafan2.battleop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
+	if enemy==nil then else
+	local dam=c:GetAttack()
+	Duel.Damage(1-tp,dam,REASON_EFFECT)
+	local ag=enemy:GetFirst()
+	for ag in aux.Next(enemy) do
+	local g=ag:GetOverlayGroup()
+	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	else
+	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	end end end
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
+	c:RemoveCounter(tp,0xc01,1,REASON_EFFECT)
+	c:RemoveCounter(tp,0xc04,1,REASON_EFFECT)
 end
 
 --1리커버리,2수면,3고립
