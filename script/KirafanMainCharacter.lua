@@ -373,8 +373,7 @@ function Kirafan.MainCharacterSpEff(c)
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_QUICK_O)
 	e7:SetCode(EVENT_FREE_CHAIN)
-	e7:SetHintTiming(TIMING_BATTLE_START+TIMING_BATTLE_STEP_END+TIMING_CHAIN_END+TIMING_DAMAGE_CAL)
-	e7:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
+	e7:SetHintTiming(TIMING_BATTLE_STEP_END)
 	e7:SetRange(LOCATION_EMZONE)
 	e7:SetCondition(Kirafan6.spcreamatecon)
 	e7:SetTarget(Kirafan.noeffecttg)
@@ -460,27 +459,30 @@ function Kirafan.RealistTime(c)
 end
 function Kirafan.realistcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return tp==Duel.GetTurnPlayer() and not c:IsSetCard(0xc01) and
-	Duel.GetMatchingGroup(Card.IsFaceup,1-tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)>=10	
+	return not c:IsSetCard(0xc01) and
+	(Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)>=10
+	or Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)>=10)
 end
 function Kirafan.realisttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetChainLimit(aux.FALSE)
 end
+
 function Kirafan.realistop(e,tp,eg,ep,ev,re,r,rp)
-	local MainCharacter=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,LOCATION_EMZONE,nil)
-	local g=MainCharacter:GetFirst()
-	for g in aux.Next(MainCharacter) do
-	local e1=Effect.CreateEffect(e:GetHandler())
+	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
+	local enemy=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_ADD_SETCODE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetValue(0xc01)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	g:RegisterEffect(e1) end
+	c:RegisterEffect(e1)
+	if Duel.GetTurnPlayer()==tp and enemy>=10 then
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,4))
-	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,5))
+	else Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,5)) end
 end
 
 --텍스트
