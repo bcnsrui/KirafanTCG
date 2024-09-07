@@ -141,5 +141,18 @@ function s.resettg2(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.resetop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnCount()<3 then
-	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(id,0)) end
+	local a=0
+	while a<=5 do
+	sugar1=Duel.CreateToken(tp,10041002)
+	sugar2=Duel.CreateToken(tp,10041003)
+	sugar3=Duel.CreateToken(tp,10041004)
+	sugar4=Duel.CreateToken(tp,10041005)
+	Duel.SendtoDeck(sugar1,nil,0,REASON_RULE)
+	Duel.SendtoDeck(sugar2,nil,0,REASON_RULE)
+	Duel.SendtoDeck(sugar3,nil,0,REASON_RULE)
+	Duel.SendtoDeck(sugar4,nil,0,REASON_RULE)
+	a=a+1 end
+	Duel.ShuffleDeck(tp)
+	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(id,0)) 
+	end
 end
