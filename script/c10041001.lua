@@ -1,0 +1,146 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	Kirafan7.BossCharacter(c)
+	Kirafan.TurnPositionMainCharacter(c)
+	Kirafan.MainCharacterEff(c)
+	Kirafan.RealistTime(c)
+	Kirafan.MainCharacterTextEff(c)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e0:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e0:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
+	e0:SetRange(LOCATION_EMZONE)
+	e0:SetCondition(s.bosscon)
+	e0:SetOperation(s.op)
+	c:RegisterEffect(e0)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_PHASE+PHASE_STANDBY)
+	e1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+	e1:SetRange(LOCATION_EMZONE)
+	e1:SetCountLimit(1)
+	e1:SetOperation(s.spsummon)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_LEAVE_FIELD)
+	e2:SetRange(LOCATION_EMZONE)
+	e2:SetCondition(s.resetcon)
+	e2:SetOperation(s.spsummon)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
+	e3:SetRange(LOCATION_EMZONE)
+	e3:SetCondition(s.resetcon2)
+	e3:SetTarget(s.resettg2)
+	e3:SetOperation(s.resetop2)
+	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD)
+	e4:SetRange(LOCATION_EMZONE)
+	e4:SetCode(EFFECT_CANNOT_PLACE_COUNTER)
+	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetTargetRange(0,1)
+	e4:SetTarget(s.cannotcounter)
+	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetCode(EFFECT_UPDATE_ATTACK)
+	e5:SetTargetRange(LOCATION_MZONE,0)
+	e5:SetRange(LOCATION_EMZONE)
+	e5:SetCondition(s.level)
+	e5:SetTarget(function(_,c) return not c:IsLocation(LOCATION_EMZONE) end)
+	e5:SetValue(1)
+	c:RegisterEffect(e5)
+end
+function s.level(e)
+	local main=Duel.GetMatchingGroup(nil,e:GetHandlerPlayer(),0,LOCATION_EMZONE,nil):GetFirst()
+	return main:GetRank()>=25
+end
+function s.cannotcounter(e,c,tp,ctype)
+	return ctype==0xb03 or ctype==0xb04
+end
+function s.bosscon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
+	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)<2
+end
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_END,0)
+	Duel.SkipPhase(tp,PHASE_MAIN2,RESET_PHASE+PHASE_END,0)
+end
+function s.cfilter(c)
+	return c:IsCode(10041002)
+end
+function s.resetcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter,1,nil)
+end
+function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
+	if #ally>0 then
+	local ag=ally:GetFirst()
+	for ag in aux.Next(ally) do
+	local g=ag:GetOverlayGroup()
+	tc=ag:GetOverlayGroup()
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT) end
+	Duel.Destroy(ally,REASON_EFFECT) end
+	
+	if c:GetDefense()==0 then
+	Duel.SetLP(tp,0)
+	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(id,1))
+	
+	else 	
+	if c:GetDefense()==2 then
+	sugar=Duel.CreateToken(tp,10041002)
+	Duel.SpecialSummon(sugar,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	else
+	sugar=Duel.CreateToken(tp,10041003)
+	Duel.SpecialSummon(sugar,0,tp,tp,false,false,POS_FACEUP_ATTACK)	end
+	
+	sugar1=Duel.CreateToken(tp,10041004)
+	Duel.SpecialSummon(sugar1,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	sugar2=Duel.CreateToken(tp,10041005)
+	Duel.SpecialSummon(sugar2,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	
+	if c:IsSetCard(0xd04) then
+	extrabosshp=10
+	extrabosshp1=2
+	elseif c:IsSetCard(0xd03) then
+	extrabosshp=8
+	extrabosshp1=2
+	elseif c:IsSetCard(0xd02) then
+	extrabosshp=4
+	extrabosshp1=1 
+	else
+	extrabosshp=0
+	extrabosshp1=0 end
+
+	local bg=Duel.GetDecktopGroup(tp,extrabosshp)
+	Duel.Overlay(sugar,bg)
+	local bg1=Duel.GetDecktopGroup(tp,extrabosshp1)
+	Duel.Overlay(sugar1,bg1)
+	local bg2=Duel.GetDecktopGroup(tp,extrabosshp1)
+	Duel.Overlay(sugar2,bg2) end
+
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_DEFENSE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e1:SetValue(-1)
+	c:RegisterEffect(e1)
+end
+function s.resetcon2(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
+	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)>1
+end
+function s.resettg2(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return true end
+	Duel.SetChainLimit(aux.FALSE)
+end
+function s.resetop2(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetTurnCount()<3 then
+	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(id,0)) end
+end

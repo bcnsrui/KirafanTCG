@@ -35,6 +35,8 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	then Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,2))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,3))
 	return Duel.SetLP(tp,0) end
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)>0
+	then return Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)==0 then
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,6))
@@ -459,6 +461,9 @@ function Kirafan.RealistTime(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan.realistcon(e,tp,eg,ep,ev,re,r,rp)
+	local main=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
+	if main:IsCode(10041001) then return false end
+
 	local c=e:GetHandler()
 	return not c:IsSetCard(0xc01) and
 	(Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)>=10

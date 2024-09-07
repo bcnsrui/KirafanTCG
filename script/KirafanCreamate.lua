@@ -12,6 +12,7 @@ function Kirafan2.CreamateCharacter(c)
 	c:EnableCounterPermit(0xc01)
 	c:EnableCounterPermit(0xc02)
 	c:EnableCounterPermit(0xc04)
+	c:EnableCounterPermit(0xd01)
 	Kirafan2.SummonCreamate(c)
 	Kirafan2.CreamateEff(c)
 	Kirafan2.CreamateBattle(c)
@@ -123,7 +124,9 @@ function Kirafan2.hp0con(e)
 	return e:GetHandler():GetDefense()==0
 end
 function Kirafan2.hp0op(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.Destroy(e:GetHandler(),REASON_EFFECT)
+	local tc=e:GetHandler():GetOverlayGroup()
+	if #tc>0 then Duel.Remove(tc,POS_FACEUP,REASON_RULE) end	
+	Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end
 function Kirafan2.hpval(e,c)
 	return c:GetOverlayGroup():GetCount()
