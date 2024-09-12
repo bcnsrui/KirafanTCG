@@ -31,6 +31,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
 	e3:SetRange(LOCATION_EMZONE)
+	e3:SetCountLimit(1)
 	e3:SetCondition(s.resetcon2)
 	e3:SetTarget(s.resettg2)
 	e3:SetOperation(s.resetop2)
@@ -57,8 +58,9 @@ function s.cannotcounter(e,c,tp,ctype)
 	return ctype==0xb03 or ctype==0xb04
 end
 function s.bosscon(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(s.bossdamfilter,tp,LOCATION_MZONE,0,nil)
 	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
-	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)<2
+	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)<2	and #ally<2
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_END,0)
@@ -130,7 +132,6 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.resetcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
-	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)>1
 end
 function s.resettg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
@@ -161,7 +162,7 @@ function s.lgop(e,tp,eg,ep,ev,re,r,rp)
 	local main=Duel.GetMatchingGroup(nil,e:GetHandlerPlayer(),0,LOCATION_EMZONE,nil):GetFirst()
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	local Turn=math.min(Duel.GetTurnCount(),10)
+	local Turn=math.min(Duel.GetTurnCount()+1,10)
 	if main:GetRank()>=20 then
 	difficultyguage=1
 	elseif main:GetRank()>=30 then
@@ -169,7 +170,8 @@ function s.lgop(e,tp,eg,ep,ev,re,r,rp)
 	elseif main:GetRank()>=40 then
 	difficultyguage=3
 	elseif main:GetRank()>=50 then
-	difficultyguage=4 end
+	difficultyguage=4 
+	else difficultyguage=0 end
 	if deckcount<Turn+difficultyguage then
 	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)

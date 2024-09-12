@@ -66,7 +66,7 @@ function s.damtg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetTargetCard(sg2) end
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk=>=9) then
+	if (main:IsSetCard(0xd04) and extraatk>=9) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -128,7 +128,7 @@ function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetTargetCard(sg2) end
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk=>=9) then
+	if (main:IsSetCard(0xd04) and extraatk>=9) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -185,7 +185,7 @@ function s.damtg3(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(Kirafan8.mychainlimit)
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk=>=9) then
+	if (main:IsSetCard(0xd04) and extraatk>=9) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -244,7 +244,7 @@ function s.damtg4(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(Kirafan8.mychainlimit)
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk=>=9) then
+	if (main:IsSetCard(0xd04) and extraatk>=9) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
