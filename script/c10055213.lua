@@ -34,6 +34,7 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	else
 	Duel.Draw(tp,2,REASON_RULE)
 	Duel.DiscardDeck(tp,race-2,REASON_EFFECT) end
+	
 	elseif race==2 then
 	if deckcount==1 then
 	Duel.Draw(tp,1,REASON_RULE)
@@ -41,6 +42,7 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Draw(tp,1,REASON_RULE)
 	else
 	Duel.Draw(tp,2,REASON_RULE) end
+	
 	else
 	Duel.Draw(tp,1,REASON_RULE) end
 end

@@ -114,17 +114,7 @@ end
 function Kirafan7.DuelSkipcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
 end
-function Kirafan7.DuelSkipop(e,tp,eg,ep,ev,re,r,rp)
-	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
-	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	local Turn=math.min(Duel.GetTurnCount(),10)
-	if deckcount<Turn then
-	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,Turn-deckcount,REASON_EFFECT)
-	else
-	Duel.DiscardDeck(tp,Turn,REASON_EFFECT) end
-	
+function Kirafan7.DuelSkipop(e,tp,eg,ep,ev,re,r,rp)	
 	local main=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
 	if main:GetDefense()<=9 then
 	local e1=Effect.CreateEffect(main)

@@ -44,18 +44,14 @@ function s.initial_effect(c)
 	e4:SetTarget(s.cannotcounter)
 	c:RegisterEffect(e4)
 	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_FIELD)
-	e5:SetCode(EFFECT_UPDATE_ATTACK)
-	e5:SetTargetRange(LOCATION_MZONE,0)
+	e5:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e5:SetCode(EVENT_PHASE+PHASE_DRAW)
 	e5:SetRange(LOCATION_EMZONE)
-	e5:SetCondition(s.level)
-	e5:SetTarget(function(_,c) return not c:IsLocation(LOCATION_EMZONE) end)
-	e5:SetValue(1)
+	e5:SetCountLimit(1)
+	e5:SetCondition(s.lgcon)
+	e5:SetOperation(s.lgop)
 	c:RegisterEffect(e5)
-end
-function s.level(e)
-	local main=Duel.GetMatchingGroup(nil,e:GetHandlerPlayer(),0,LOCATION_EMZONE,nil):GetFirst()
-	return main:GetRank()>=25
 end
 function s.cannotcounter(e,c,tp,ctype)
 	return ctype==0xb03 or ctype==0xb04
@@ -104,17 +100,19 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 	
 	if c:IsSetCard(0xd04) then
 	extrabosshp=10
-	extrabosshp1=2
+	extrabosshp1=6
 	elseif c:IsSetCard(0xd03) then
 	extrabosshp=8
-	extrabosshp1=2
+	extrabosshp1=4
 	elseif c:IsSetCard(0xd02) then
-	extrabosshp=4
-	extrabosshp1=1 
+	extrabosshp=5
+	extrabosshp1=2 
 	else
 	extrabosshp=0
 	extrabosshp1=0 end
 
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	local bg=Duel.GetDecktopGroup(tp,extrabosshp)
 	Duel.Overlay(sugar,bg)
 	local bg1=Duel.GetDecktopGroup(tp,extrabosshp1)
@@ -142,7 +140,7 @@ end
 function s.resetop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnCount()<3 then
 	local a=0
-	while a<=5 do
+	while a<=7 do
 	sugar1=Duel.CreateToken(tp,10041002)
 	sugar2=Duel.CreateToken(tp,10041003)
 	sugar3=Duel.CreateToken(tp,10041004)
@@ -155,4 +153,27 @@ function s.resetop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ShuffleDeck(tp)
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(id,0)) 
 	end
+end
+function s.lgcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()~=tp
+end
+function s.lgop(e,tp,eg,ep,ev,re,r,rp)
+	local main=Duel.GetMatchingGroup(nil,e:GetHandlerPlayer(),0,LOCATION_EMZONE,nil):GetFirst()
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
+	local Turn=math.min(Duel.GetTurnCount(),10)
+	if main:GetRank()>=20 then
+	difficultyguage=1
+	elseif main:GetRank()>=30 then
+	difficultyguage=2
+	elseif main:GetRank()>=40 then
+	difficultyguage=3
+	elseif main:GetRank()>=50 then
+	difficultyguage=4 end
+	if deckcount<Turn+difficultyguage then
+	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.DiscardDeck(tp,Turn+difficultyguage-deckcount,REASON_EFFECT)
+	else
+	Duel.DiscardDeck(tp,Turn+difficultyguage,REASON_EFFECT) end
 end

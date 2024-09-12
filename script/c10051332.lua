@@ -32,18 +32,6 @@ end
 function s.filter(c,att)
 	return c:IsAttribute(att) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
 end
-
-function s.AttackDotteop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsSetCard(0xb01) then return end
-	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
-	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if deckcount==0 then
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
-	else
-    Duel.DiscardDeck(tp,1,REASON_EFFECT) end
-end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()

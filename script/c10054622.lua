@@ -66,7 +66,15 @@ function s.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Kirafan6.summonhint2(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.op1(e,tp,eg,ep,ev,re,r,rp)
-    Duel.DiscardDeck(tp,2,REASON_EFFECT)
+	local c=e:GetHandler()
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
+	if deckcount==1 then
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	else
+	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
 end
 function s.op2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

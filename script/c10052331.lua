@@ -8,6 +8,11 @@ function s.initial_effect(c)
 	e1:SetCondition(s.atkcon)
 	e1:SetOperation(s.atkop)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetOperation(s.atklimit)
+	c:RegisterEffect(e2)
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(10050111,5))
 	e5:SetType(EFFECT_TYPE_QUICK_O)
@@ -25,6 +30,17 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_ATTACK)
+end
+function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
+	if deckcount==1 then
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	else
+	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

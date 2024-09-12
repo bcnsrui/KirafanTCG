@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	Kirafan6.NoDotteEffcon2(c)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-    Duel.DiscardDeck(tp,2,REASON_EFFECT)
+    Duel.DiscardDeck(tp,1,REASON_EFFECT)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

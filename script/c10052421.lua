@@ -24,7 +24,6 @@ function s.con(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
