@@ -4,8 +4,8 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetRange(LOCATION_MZONE)
 	e1:SetValue(s.fccondition)
 	c:RegisterEffect(e1)
 	local e5=Effect.CreateEffect(c)
@@ -21,21 +21,19 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 	Kirafan6.NoDotteEffcon2(c)
 end
-function s.fccondition(e)
-	local tp=e:GetHandlerPlayer()
-	return Duel.GetMatchingGroupCount(s.cfilter,tp,0,LOCATION_ONFIELD,nil)
-end
-function s.cfilter(c)
-	return Duel.IsExistingMatchingCard(s.filter,0,LOCATION_ONFIELD,0,1,nil,c:GetAttribute())
-	and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
-end
-function s.filter(c,att)
-	return c:IsAttribute(att) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+function s.fccondition(e,c)
+	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,c:GetControler(),LOCATION_ONFIELD,0,nil)
+	local tc=g:GetFirst()
+	local attr=0
+	for tc in aux.Next(g) do
+		attr=(attr|tc:GetAttribute())
+	end
+	return Duel.GetMatchingGroupCount(Card.IsAttribute,e:GetHandler():GetControler(),0,LOCATION_ONFIELD,nil,attr)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=Duel.GetMatchingGroupCount(s.cfilter,tp,0,LOCATION_ONFIELD,nil)+1
+	local dam=c:GetAttack()
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
