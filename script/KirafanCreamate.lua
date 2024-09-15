@@ -37,8 +37,8 @@ function Kirafan2.callcon(e,c)
 	local tp=c:GetControler()
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
-    return (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and main:GetDefense()-CreamateLv>=c:GetLevel())
-	or main:IsCode(10050110)
+    return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and (main:GetDefense()-CreamateLv>=c:GetLevel()
+	or main:IsCode(10050110))
 end
 
 --유희왕과 다른 룰(1표시형식변경불가,2~3통상소환불가,4체력은수비력,5수비공격가능,6공격선언시1돗테,7hp채우기)
