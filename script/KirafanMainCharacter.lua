@@ -26,7 +26,7 @@ function Kirafan.DuelStartMainCharacter(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan.battlezonefilter(c)
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(2)
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY)
 end
 function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
@@ -64,9 +64,8 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_UPDATE_DEFENSE)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e1:SetValue(2)
+	e1:SetValue(4)
 	e:GetHandler():RegisterEffect(e1)
-	if tp==Duel.GetTurnPlayer() then Duel.DiscardDeck(tp,1,REASON_RULE) end
 end
 
 --드로우 스탠바이페이즈 처리
@@ -136,14 +135,6 @@ end
 function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
 end
-function Kirafan.stcallfilter(c,e,tp)
-	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(main)
-end
-function Kirafan.stcallfilter2(c)
-	local main=Duel.GetMatchingGroup(nil,c:GetControler(),LOCATION_EMZONE,0,nil):GetFirst():GetDefense()
-	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and c:IsLevelBelow(main)
-end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(tp,1,REASON_RULE)
 	local AlchemistDeck=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):GetCount()
@@ -166,7 +157,7 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(tc,REASON_RULE) end end end
 	
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1
-	and Duel.GetMatchingGroupCount(Kirafan.stcallfilter2,tp,LOCATION_HAND,0,nil)==0
+	and Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0
 	and not e:GetHandler():IsCode(10050110) then
 	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.ConfirmCards(1-tp,sg)
@@ -176,7 +167,7 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	
 	if Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and not e:GetHandler():IsCode(10050110) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local summon=Duel.SelectMatchingCard(tp,Kirafan.stcallfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+	local summon=Duel.SelectMatchingCard(tp,Kirafan.battlezonefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
 	Duel.SpecialSummon(summon,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	end
 end
@@ -331,7 +322,7 @@ function Kirafan.extrarank(e,c)
 end
 
 --메인 캐릭터 기동효과
---1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인
+--1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인,8선공배페
 function Kirafan.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050111,1))
@@ -381,6 +372,13 @@ function Kirafan.MainCharacterSpEff(c)
 	e7:SetCondition(Kirafan6.spcreamatecon)
 	e7:SetTarget(Kirafan.noeffecttg)
 	c:RegisterEffect(e7)
+	local e8=Effect.CreateEffect(c)
+	e8:SetType(EFFECT_TYPE_FIELD)
+	e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CANNOT_DISABLE)
+	e8:SetCode(EFFECT_BP_FIRST_TURN)
+	e8:SetRange(LOCATION_EMZONE)
+	e8:SetTargetRange(1,1)
+	c:RegisterEffect(e8)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
