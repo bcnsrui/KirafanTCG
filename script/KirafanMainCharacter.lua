@@ -451,6 +451,7 @@ function Kirafan.RealistTime(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
 	e1:SetCountLimit(1,id)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCondition(Kirafan.realistcon)
@@ -459,13 +460,10 @@ function Kirafan.RealistTime(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan.realistcon(e,tp,eg,ep,ev,re,r,rp)
-	local main=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
-	if main:IsCode(10041001) then return false end
-
 	local c=e:GetHandler()
-	return not c:IsSetCard(0xc01) and
-	(Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)>=10
-	or Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)>=10)
+	local main=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
+	return main:IsSetCard(0xc01) or (Duel.GetTurnPlayer()==tp and not c:IsSetCard(0xc01) and
+	Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)>=10)
 end
 function Kirafan.realisttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
