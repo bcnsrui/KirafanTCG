@@ -5,12 +5,12 @@ function s.initial_effect(c)
 	Kirafan.MainCharacterEff(c)
 	Kirafan.MainCharacterTextEff(c)
 	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e0:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e0:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
 	e0:SetRange(LOCATION_EMZONE)
 	e0:SetCondition(s.bosscon)
-	e0:SetOperation(s.op)
+	e0:SetTarget(s.bosstg)
+	e0:SetOperation(s.bossop)
 	c:RegisterEffect(e0)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -65,7 +65,12 @@ function s.bosscon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
 	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)<2	and #ally<2
 end
-function s.op(e,tp,eg,ep,ev,re,r,rp)
+function s.bosstg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return true end
+	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10041002,5))
+end
+function s.bossop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_END,0)
 	Duel.SkipPhase(tp,PHASE_MAIN2,RESET_PHASE+PHASE_END,0)
 end
