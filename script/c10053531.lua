@@ -32,7 +32,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_ADD_SETCODE)
 	e1:SetRange(LOCATION_ONFIELD)
-	e1:SetValue(0xb01)
+	e1:SetValue(0xb02)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e:GetHandler():RegisterEffect(e1)
 end
@@ -40,7 +40,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dam=1
-	if c:IsSetCard(0xb01) then dam=2 end
+	if c:IsSetCard(0xb02) then dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local ag=enemy:GetFirst()
 	for ag in aux.Next(enemy) do

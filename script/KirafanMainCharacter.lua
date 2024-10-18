@@ -124,12 +124,16 @@ function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	if tp==Duel.GetTurnPlayer() then
-	if deckcount==1 then
-	Duel.Draw(tp,1,REASON_RULE)
+	if deckcount<3 then
+	Duel.Draw(tp,deckcount,REASON_RULE)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.Draw(tp,1,REASON_RULE)
+	Duel.Draw(tp,3-deckcount,REASON_RULE)
 	else
-	Duel.Draw(tp,2,REASON_RULE) end
+	Duel.Draw(tp,3,REASON_RULE) end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
+	local tg=g:GetFirst()
+	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
 	end
 end
 function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
@@ -153,7 +157,6 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE)
 	else
-	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE) end end end
 	
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1

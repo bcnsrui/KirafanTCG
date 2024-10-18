@@ -255,7 +255,6 @@ end
 function Kirafan3.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
-	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
@@ -264,7 +263,6 @@ end
 function Kirafan3.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
-	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
@@ -274,7 +272,6 @@ end
 function Kirafan3.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
-	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
@@ -285,7 +282,6 @@ end
 function Kirafan3.dottecost4(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,4,nil,tp) end
-	if e:GetHandler():IsRace(RACE_ZOMBIE) then Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_RULE) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
