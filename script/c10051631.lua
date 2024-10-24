@@ -35,7 +35,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
-	dam=9 end end
+	dam=7 end end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)

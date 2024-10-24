@@ -22,4 +22,6 @@ function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)>0 then
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp) end
 end
