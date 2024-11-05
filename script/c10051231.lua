@@ -29,7 +29,7 @@ function s.cfilter(c)
 	return c:IsLocation(LOCATION_EXTRA)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(Card.IsLocation,1,nil,LOCATION_EXTRA)
+	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and eg:IsExists(Card.IsLocation,1,nil,LOCATION_EXTRA)
 	and Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)

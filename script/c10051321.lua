@@ -27,7 +27,7 @@ function s.initial_effect(c)
 end
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsRace(RACE_ZOMBIE|RACE_FIEND)
-	and Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and re:GetActivateLocation(LOCATION_HAND+LOCATION_FIELD)
+	and Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and re:GetActivateLocation(LOCATION_HAND)
 	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil)
 end
 function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -41,6 +41,7 @@ function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
+	Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
