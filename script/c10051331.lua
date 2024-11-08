@@ -30,11 +30,12 @@ function s.AttackDotteop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsSetCard(0xb01) then return end
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if deckcount==0 then
+	if deckcount==1 then
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.DiscardDeck(tp,1,REASON_EFFECT)
 	else
-    Duel.DiscardDeck(tp,1,REASON_EFFECT) end
+	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

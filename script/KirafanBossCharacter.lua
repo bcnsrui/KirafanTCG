@@ -125,11 +125,6 @@ function Kirafan7.DuelSkipop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	main:RegisterEffect(e1)	end
 	
-	local AlchemistDeck=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):GetCount()
-	if Duel.GetTurnCount()>2 and AlchemistDeck>0 then
-	local Alchemist=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):RandomSelect(1-tp,1):GetFirst()
-	Duel.MoveToField(Alchemist,1-tp,1-tp,LOCATION_FZONE,POS_FACEDOWN,true) end
-	
 	Duel.SkipPhase(tp,PHASE_DRAW,RESET_PHASE+PHASE_END,0)
 	Duel.SkipPhase(tp,PHASE_STANDBY,RESET_PHASE+PHASE_END,0)
 	Duel.SkipPhase(tp,PHASE_MAIN1,RESET_PHASE+PHASE_END,0)
@@ -196,4 +191,15 @@ function Kirafan7.BossCharacterEff(c)
 	e5:SetCondition(Kirafan.lifecon2)
 	e5:SetOperation(Kirafan.lifeop2)
 	c:RegisterEffect(e5)
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD)
+	e6:SetCode(EFFECT_CANNOT_ACTIVATE)
+	e6:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e6:SetRange(LOCATION_EMZONE)
+	e6:SetTargetRange(1,0)
+	e6:SetValue(Kirafan7.dottelimit)
+	c:RegisterEffect(e6)
+end
+function Kirafan7.dottelimit(e,re,tp)
+	return re:GetHandler():IsLocation(LOCATION_GRAVE)
 end

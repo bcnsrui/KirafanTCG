@@ -26,7 +26,7 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
 end
 function s.filter(c)
-	return c:GetCounter(0xb04)>0 and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return c:GetCounter(0xb04)>0 and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

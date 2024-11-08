@@ -42,7 +42,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.bossdamfilter(c)
-	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.bossdamcon1(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(s.bossdamfilter,tp,LOCATION_MZONE,0,nil)

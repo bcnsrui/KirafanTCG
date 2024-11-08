@@ -3,17 +3,14 @@ function s.initial_effect(c)
 	Kirafan3.SpCreamateSgHeal(c)	
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050113,4))
-	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCost(s.dottecost2)
+	e1:SetCondition(Kirafan6.spcreamatecon)
+	e1:SetCost(s.dottecost1)
 	e1:SetTarget(s.dottetg)
 	e1:SetOperation(s.dotteop)
 	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetCode(EVENT_FREE_CHAIN)
-	e2:SetCondition(Kirafan6.spcreamatecon)
-	c:RegisterEffect(e2)	
 	Kirafan3.SpCreamateCharacter(c)
 end
 function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -44,13 +41,12 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	end end
 end
 
-function s.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.dottecost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,nil)
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
+	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,nil)

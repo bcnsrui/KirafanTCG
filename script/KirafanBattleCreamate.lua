@@ -43,7 +43,7 @@ function Kirafan6.loadfactorfilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function Kirafan6.NoEmFzonefilter(c)
-	return not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return not c:IsLocation(LOCATION_EMZONE)
 end
 
 --상대턴
@@ -56,8 +56,10 @@ function Kirafan6.dottecon2(e,tp,eg,ep,ev,re,r,rp)
 end
 --카운터 타이밍
 function Kirafan6.spcreamatecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp and (Duel.GetCurrentPhase()==PHASE_BATTLE_START or
-	Duel.GetCurrentPhase()==PHASE_BATTLE_STEP or Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL)
+	return (Duel.GetTurnPlayer()==tp and (Duel.IsMainPhase() or Duel.GetCurrentPhase()==PHASE_BATTLE_STEP)
+	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0) or
+	(Duel.GetTurnPlayer()~=tp and (Duel.GetCurrentPhase()==PHASE_BATTLE_START or
+	Duel.GetCurrentPhase()==PHASE_BATTLE_STEP or Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL))
 end
 
 --자신 돗테오키 게이지 줄이기

@@ -141,10 +141,6 @@ function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(tp,1,REASON_RULE)
-	local AlchemistDeck=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):GetCount()
-	if Duel.GetTurnCount()>2 and AlchemistDeck>0 and not e:GetHandler():IsCode(10050110) then
-	local Alchemist=Duel.GetMatchingGroup(Card.IsFacedown,1-tp,LOCATION_EXTRA,0,nil):RandomSelect(1-tp,1):GetFirst()
-	Duel.MoveToField(Alchemist,1-tp,1-tp,LOCATION_FZONE,POS_FACEDOWN,true) end
 	
 	if Duel.GetTurnCount()>2 then
 	if Duel.SelectYesNo(tp,aux.Stringid(10050111,0)) then
@@ -200,23 +196,11 @@ end
 function Kirafan.TurnPositionfilter(c)
 	return c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
 end
-function Kirafan.NoFzonefilter(c)
-	return not c:IsLocation(LOCATION_FZONE)
-end
 function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local sg=Duel.GetMatchingGroup(Kirafan.TurnPositionfilter,tp,LOCATION_MZONE,0,nil)
 	Duel.ChangePosition(sg,POS_FACEUP_ATTACK)
 
-	local ag=Duel.GetMatchingGroup(Kirafan.NoFzonefilter,tp,LOCATION_SZONE,LOCATION_SZONE,nil)
-	Duel.Remove(ag,POS_FACEUP,REASON_RULE)
-	if tp==Duel.GetTurnPlayer() and not e:GetHandler():IsCode(10050110) then
-	local ag2=Duel.GetMatchingGroup(Card.IsFacedown,tp,LOCATION_FZONE,0,nil)
-	if #ag2==1 then Duel.Draw(tp,1,REASON_RULE)
-	Duel.SendtoDeck(ag2,nil,-2,REASON_RULE) end end
-	
-	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
-	
 	local enemy2=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local cg=enemy2:GetFirst()
 	for cg in aux.Next(enemy2) do
@@ -231,7 +215,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	cg:RemoveCounter(tp,0xc04,cg:GetCounter(0xc04),REASON_EFFECT)	end
 	
 	local g=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
-	if tp==Duel.GetTurnPlayer() and g>5 then
+	if tp~=Duel.GetTurnPlayer() and g>5 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,2))
 	local tg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,g-5,g-5,nil)
 	Duel.Remove(tg,POS_FACEUP,REASON_RULE)

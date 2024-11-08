@@ -2,15 +2,9 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Kirafan2.CreamateCharacter(c)
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e1:SetCode(EVENT_LEAVE_FIELD)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1)
-	e1:SetCondition(s.spcon)
-	e1:SetTarget(s.sptg)
-	e1:SetOperation(s.spop)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetOperation(s.atklimit)
 	c:RegisterEffect(e1)
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(10050111,5))
@@ -25,16 +19,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 	Kirafan6.NoDotteEffcon2(c)
 end
-function s.cfilter(c)
-	return c:IsLocation(LOCATION_EXTRA)
-end
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and eg:IsExists(Card.IsLocation,1,nil,LOCATION_EXTRA)
-	and Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,nil)
-end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	Duel.SetChainLimit(aux.FALSE)
+function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Draw(tp,1,REASON_EFFECT)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -46,13 +32,7 @@ end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=2
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(1)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
-	c:RegisterEffect(e1)
+	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
@@ -60,5 +40,10 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
+	if Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,c)
+	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
+	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
+	Duel.ChangePosition(ag,POS_FACEUP_DEFENSE)
+	c:AddCounter(0xc01,1) end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

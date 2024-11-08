@@ -15,10 +15,10 @@ function s.initial_effect(c)
 	Kirafan6.NoDotteEffcon2(c)
 end
 function s.lightfilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.darkfilter(c)
-	return c:IsAttribute(ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return c:IsAttribute(ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

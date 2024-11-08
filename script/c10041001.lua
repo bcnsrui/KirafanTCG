@@ -58,7 +58,7 @@ function s.cannotcounter(e,c,tp,ctype)
 	return ctype==0xb03 or ctype==0xb04
 end
 function s.bossdamfilter(c)
-	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE)
+	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.bosscon(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(s.bossdamfilter,tp,LOCATION_MZONE,0,nil)
