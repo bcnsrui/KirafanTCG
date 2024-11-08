@@ -201,6 +201,9 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetMatchingGroup(Kirafan.TurnPositionfilter,tp,LOCATION_MZONE,0,nil)
 	Duel.ChangePosition(sg,POS_FACEUP_ATTACK)
 
+	local ag=Duel.GetFieldGroup(tp,LOCATION_SZONE,0)
+	Duel.Remove(ag,POS_FACEUP,REASON_RULE)
+
 	local enemy2=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local cg=enemy2:GetFirst()
 	for cg in aux.Next(enemy2) do
