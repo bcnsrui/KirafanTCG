@@ -75,7 +75,6 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	tc:RemoveCounter(tp,0xb04,tc:GetCounter(0xb04),REASON_EFFECT)
 	tc:RemoveCounter(tp,0xb05,tc:GetCounter(0xb05),REASON_EFFECT)
 	tc:RemoveCounter(tp,0xb06,tc:GetCounter(0xb06),REASON_EFFECT) end
-	Kirafan6.guagetrigger(c)
 end
 
 function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
