@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e6:SetTarget(Kirafan6.nodamtg)
 	e6:SetOperation(s.damop2)
 	c:RegisterEffect(e6)	
-	Kirafan6.NoDotteEffcon3(c)
+	Kirafan6.NoDotteEffcon2(c)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon3(c)
+	Kirafan6.NoDotteEffcon2(c)
 end
 function s.filter(c)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_WARRIOR+RACE_FAIRY) and c:IsAbleToHand()

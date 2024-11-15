@@ -20,7 +20,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Kirafan6.summonhint(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.filter(c)
-	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsLevelBelow(2) and c:IsAbleToHand()
+	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsAbleToHand()
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end

@@ -24,8 +24,8 @@ end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
-	local dotte=Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)
-	if dotte>0 and dotte<=3 and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_GRAVE,0,nil)>0
+	and Duel.SelectYesNo(tp,aux.Stringid(10050111,4)) then
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	dam=2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)

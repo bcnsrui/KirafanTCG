@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	e5:SetTarget(Kirafan6.nodamtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon3(c)
+	Kirafan6.NoDotteEffcon2(c)
 end
 function s.fccondition(e)
 	local tp=e:GetHandlerPlayer()

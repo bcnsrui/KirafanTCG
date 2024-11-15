@@ -145,7 +145,8 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnCount()>2 then
 	if Duel.SelectYesNo(tp,aux.Stringid(10050111,0)) then
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND+LOCATION_MZONE,0,0,1,e:GetHandler())
-	if #g==0 then return end
+	if #g==0 then
+	else
 	local tc=g:GetFirst()
 	if tc:IsLocation(LOCATION_MZONE) then
 	local tg=tc:GetOverlayGroup()
@@ -153,7 +154,7 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE)
 	else
-	Duel.SendtoGrave(tc,REASON_RULE) end end end
+	Duel.SendtoGrave(tc,REASON_RULE) end end end end
 	
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1
 	and Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0
