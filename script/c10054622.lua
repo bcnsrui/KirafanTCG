@@ -57,12 +57,13 @@ function s.op1(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if deckcount==1 then
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	local dam=Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_ONFIELD,nil)
+	if deckcount<3 then
+	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Duel.DiscardDeck(tp,3-deckcount,REASON_EFFECT)
 	else
-	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
+	Duel.DiscardDeck(tp,3,REASON_EFFECT) end
 end
 function s.op2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

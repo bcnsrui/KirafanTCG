@@ -17,8 +17,6 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	local yasuna=Duel.CreateToken(tp,10053332)
-	Duel.SpecialSummon(yasuna,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+	Duel.SpecialSummon(yasuna,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 end

@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCondition(Kirafan6.spcreamatecon)
-	e1:SetCost(s.dottecost3)
+	e1:SetCost(s.dottecost2)
 	e1:SetTarget(Kirafan6.nospdamtg)
 	e1:SetOperation(s.dotteop)
 	c:RegisterEffect(e1)
@@ -102,15 +102,14 @@ function s.chiyaop3(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterEffect(e1)
 end
 
-function s.dottecost3(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.dottecost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 	Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,nil)
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil,tp) end
+	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
 	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	main:AddCounter(0xc03,1)
 	Kirafan6.dottehint(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050115,0))
