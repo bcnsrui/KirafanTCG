@@ -32,7 +32,7 @@ function Kirafan5.SkillAggroknight(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan5.atval(e,re,rp)
-	if re:GetActivateLocation()==LOCATION_MZONE then return true end
+	if rp~=e:GetHandlerPlayer() and re:GetActivateLocation()==LOCATION_MZONE then return true end
 end
 
 --나이트 1뎀 돗테오키
