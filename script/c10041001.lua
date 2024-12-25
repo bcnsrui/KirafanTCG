@@ -55,7 +55,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 function s.cannotcounter(e,c,tp,ctype)
-	return ctype==0xb03 or ctype==0xb04
+	return c:IsControler(1-tp) and (ctype==0xb03 or ctype==0xb04)
 end
 function s.bossdamfilter(c)
 	return c:IsAttackPos() and not c:IsLocation(LOCATION_EMZONE)

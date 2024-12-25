@@ -27,6 +27,7 @@ function s.lffilter(c)
 	return c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	tc:AddCounter(0xc01,1)
 	Kirafan6.guagetrigger(c)
