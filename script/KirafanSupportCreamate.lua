@@ -42,7 +42,7 @@ function Kirafan3.triggercon(e)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
     return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and main:GetDefense()-CreamateLv<c:GetLevel()
-	and not main:IsCode(10050110)
+	and not main:IsCode(10050110) and c:IsLocation(LOCATION_HAND)
 end
 function Kirafan3.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

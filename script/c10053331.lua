@@ -13,10 +13,10 @@ function s.initial_effect(c)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetLocation()==LOCATION_EXTRA
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local yasuna=Duel.CreateToken(tp,10053332)
 	Duel.SpecialSummon(yasuna,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	if Duel.IsBattlePhase() then yasuna:AddCounter(0xc01,1) end
 end
