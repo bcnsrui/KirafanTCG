@@ -33,7 +33,15 @@ end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=c:GetAttack()
+	
+	local ag=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,c:GetControler(),LOCATION_ONFIELD,0,nil)
+	local ta=ag:GetFirst()
+	local attr=0
+	for ta in aux.Next(ag) do
+		attr=(attr|ta:GetAttribute())
+	end
+	
+	local dam=Duel.GetMatchingGroupCount(Card.IsAttribute,c:GetControler(),0,LOCATION_ONFIELD,nil,attr)+1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)

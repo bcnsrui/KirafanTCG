@@ -14,12 +14,11 @@ function s.initial_effect(c)
 	Kirafan3.SpCreamateCharacter(c)
 end
 function s.lightfilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingMatchingCard(s.lightfilter,tp,LOCATION_ONFIELD,0,2,nil)
-	and Duel.IsExistingMatchingCard(s.lightfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(s.lightfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,2))
 	local g=Duel.SelectTarget(tp,s.lightfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
