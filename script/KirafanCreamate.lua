@@ -90,6 +90,12 @@ function Kirafan2.CreamateEff(c)
 	e8:SetRange(LOCATION_MZONE)
 	e8:SetTarget(Kirafan2.NoBtDestroy)
 	c:RegisterEffect(e8)
+	local e9=Effect.CreateEffect(c)
+	e9:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e9:SetCode(EVENT_TO_DECK)
+	e9:SetCondition(Kirafan2.hp0con2)
+	e9:SetOperation(Kirafan2.hp0op2)
+	c:RegisterEffect(e9)
 end
 function Kirafan2.AttackDottecon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
@@ -140,6 +146,16 @@ function Kirafan2.NoBtDestroy(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return c:IsReason(REASON_BATTLE) and not c:IsReason(REASON_REPLACE)
 		and c:CheckRemoveOverlayCard(tp,1,REASON_EFFECT) end
 	return true
+end
+function Kirafan2.hp0con2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return Duel.GetMatchingGroupCount(Card.IsFacedown,tp,LOCATION_EXTRA,0,nil)>0 and
+	c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsLocation(LOCATION_EXTRA)
+end
+function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local g=Duel.SelectMatchingCard(tp,Card.IsFacedown,tp,LOCATION_EXTRA,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_EFFECT)
 end
 
 --데미지처리(1단일공격,2광역공격,3무량공격,4카운터필요,5히로)

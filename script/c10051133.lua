@@ -44,8 +44,7 @@ end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=3
-	if tg:GetCounter(0xb01)>0 then dam=3 end
+	local dam=4
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)

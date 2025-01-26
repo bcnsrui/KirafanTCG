@@ -11,6 +11,14 @@ function Kirafan.MainCharacter(c)
 	Kirafan.MainCharacterSpEff(c)
 	Kirafan.RealistTime(c)
 	Kirafan.MainCharacterTextEff(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_DEFENSE)
+	e1:SetValue(Kirafan.starlightstone)
+	c:RegisterEffect(e1)
+end
+function Kirafan.starlightstone(e,c)
+	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_EXTRA,0)
 end
 
 
@@ -47,7 +55,7 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
-	Duel.Draw(tp,5,REASON_RULE) end
+	Duel.Draw(tp,9,REASON_RULE) end
 	local fg1=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_ZOMBIE)
 	local fg2=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FIEND)
 	local fg3=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_HAND,0,nil,RACE_FAIRY)
@@ -58,14 +66,15 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(fg3,nil,0,REASON_RULE)
 	Duel.SendtoDeck(fg4,nil,0,REASON_RULE)
 	Duel.SendtoDeck(fg5,nil,0,REASON_RULE)
-	Duel.Draw(tp,5,REASON_RULE)
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_DEFENSE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e1:SetValue(4)
-	e:GetHandler():RegisterEffect(e1)
+	Duel.Draw(tp,9,REASON_RULE)
+	while Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<4 and not e:GetHandler():IsCode(10050110) do
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,4))
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND+LOCATION_EXTRA,0,1,1,nil):GetFirst()
+	if g:IsLocation(LOCATION_HAND) then
+	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN)
+	elseif g:IsLocation(LOCATION_EXTRA) then
+	Duel.SendtoHand(g,nil,REASON_RULE)
+	elseif Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)>2 then return end end
 end
 
 --드로우 스탠바이페이즈 처리
@@ -113,28 +122,26 @@ function Kirafan.drawcon(e,tp,eg,ep,ev,re,r,rp)
 	return (Duel.GetTurnCount()~=1 and Duel.GetTurnCount()~=2)
 end
 function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetDefense()<=9 then
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_DEFENSE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e1:SetValue(1)
-	e:GetHandler():RegisterEffect(e1) end
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if tp==Duel.GetTurnPlayer() then
+	if tp==Duel.GetTurnPlayer() and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
 	if deckcount<3 then
 	Duel.Draw(tp,deckcount,REASON_RULE)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.Draw(tp,3-deckcount,REASON_RULE)
 	else
 	Duel.Draw(tp,3,REASON_RULE) end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
-	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
-	local tg=g:GetFirst()
-	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
-	end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
+	if #g>0 then
+	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
+	
+	if tp~=Duel.GetTurnPlayer() and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
+	if Duel.SelectYesNo(tp,aux.Stringid(10050112,6))
+	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) then
+	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
+	local sg=Duel.GetDecktopGroup(tp,1)
+	Duel.Sendto(sg,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
 end
 function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
@@ -155,7 +162,13 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(tc,REASON_RULE)
 	else
 	Duel.SendtoGrave(tc,REASON_RULE) end end end end
-	
+end
+function Kirafan.battlecon(e,tp,eg,ep,ev,re,r,rp)
+	return tp==Duel.GetTurnPlayer()
+end
+function Kirafan.battleop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1
 	and Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0
 	and not e:GetHandler():IsCode(10050110) then
@@ -164,18 +177,12 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,0))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,1))
 	return Duel.SetLP(tp,0) end
-	
+
 	if Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and not e:GetHandler():IsCode(10050110) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local summon=Duel.SelectMatchingCard(tp,Kirafan.battlezonefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-	Duel.SpecialSummon(summon,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	end
-end
-function Kirafan.battlecon(e,tp,eg,ep,ev,re,r,rp)
-	return tp==Duel.GetTurnPlayer()
-end
-function Kirafan.battleop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
+	Duel.SpecialSummon(summon,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+
 	local btcreamate=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local ag=btcreamate:GetFirst()
 	for ag in aux.Next(btcreamate) do
@@ -301,7 +308,7 @@ function Kirafan.aatcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsBattlePhase()
 end
 function Kirafan.FieldTheRockop(e,tp)
-	return 0x150a
+	if tp==Duel.GetTurnPlayer() then return 0x0a0a else return 0x150a end
 end
 function Kirafan.fieldlevel(e,c)
 	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,c:GetControler(),LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
@@ -356,6 +363,7 @@ function Kirafan.MainCharacterSpEff(c)
 	e6:SetOperation(Kirafan.lifeop2)
 	c:RegisterEffect(e6)
 	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(10050111,8))
 	e7:SetType(EFFECT_TYPE_QUICK_O)
 	e7:SetCode(EVENT_FREE_CHAIN)
 	e7:SetHintTiming(TIMING_BATTLE_STEP_END)

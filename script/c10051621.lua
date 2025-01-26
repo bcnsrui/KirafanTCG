@@ -23,7 +23,7 @@ function s.initial_effect(c)
 	Kirafan6.NoDotteEffcon2(c)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetDefense()>=6 or e:GetHandler():GetAttack()>=3
+	return (e:GetHandler():GetDefense()>=6 or e:GetHandler():GetAttack()>=3) and Duel.GetTurnPlayer()==tp
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())

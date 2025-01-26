@@ -23,5 +23,5 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc:GetCounter(0xb02)==0 then tc:AddCounter(0xb02,1) else end
-	Kirafan6.guagetrigger(c)
+	Kirafan6.drawtrigger(c)
 end

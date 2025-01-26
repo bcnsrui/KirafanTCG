@@ -21,8 +21,13 @@ end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 	Duel.Draw(tp,1,REASON_EFFECT)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
 	Duel.Draw(1-tp,1,REASON_EFFECT)
+	if deckcount==1 then
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	else
+	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
 	else
 	Duel.Draw(tp,1,REASON_EFFECT) end
 end
