@@ -3,7 +3,7 @@ Kirafan4={}
 
 --덱에서 돗테오키 존으로 보내졌을 때
 function Kirafan4.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_DECK+LOCATION_HAND)
+	return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA+LOCATION_DECK+LOCATION_HAND)
 end
 
 --이번 턴 아군 단일의 공격력+1

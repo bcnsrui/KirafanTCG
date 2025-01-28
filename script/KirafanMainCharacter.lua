@@ -166,22 +166,26 @@ end
 function Kirafan.battlecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
 end
+function Kirafan.battlezonefilter2(c,e,tp)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
+	return c:IsRace(RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+	and (main:GetDefense()-CreamateLv>=c:GetLevel()	or main:IsCode(10050110))
+end
 function Kirafan.battleop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 
-	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1
-	and Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0
-	and not e:GetHandler():IsCode(10050110) then
+	if Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and not e:GetHandler():IsCode(10050110) then
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local summon=Duel.SelectMatchingCard(tp,Kirafan.battlezonefilter2,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+	Duel.SpecialSummon(summon,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_MZONE,0,nil)==1 and not e:GetHandler():IsCode(10050110) then
 	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.ConfirmCards(1-tp,sg)
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,0))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,1))
 	return Duel.SetLP(tp,0) end
-
-	if Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and not e:GetHandler():IsCode(10050110) then
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local summon=Duel.SelectMatchingCard(tp,Kirafan.battlezonefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-	Duel.SpecialSummon(summon,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
 
 	local btcreamate=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local ag=btcreamate:GetFirst()
