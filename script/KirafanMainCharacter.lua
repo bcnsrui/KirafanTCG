@@ -141,11 +141,10 @@ function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
 	
 	if tp~=Duel.GetTurnPlayer() and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
-	if Duel.SelectYesNo(tp,aux.Stringid(10050112,6))
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil,tp) then
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetDecktopGroup(tp,1)
-	Duel.Sendto(sg,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
+	if #g>0 then
+	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
 end
 function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
