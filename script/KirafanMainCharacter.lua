@@ -50,6 +50,10 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,6))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,6))
 	return Duel.SetLP(tp,0) end
+	shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
+	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.ShuffleDeck(tp)
+	Duel.Draw(tp,9,REASON_RULE)
 	while Duel.GetMatchingGroupCount(Kirafan.battlezonefilter,tp,LOCATION_HAND,0,nil)==0 
 	and not e:GetHandler():IsCode(10050110) do
 	shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
