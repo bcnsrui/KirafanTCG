@@ -41,7 +41,7 @@ function Kirafan2.callcon(e,c)
 	or main:IsCode(10050110))
 end
 
---유희왕과 다른 룰(1표시형식변경불가,2~3통상소환불가,4체력은수비력,5수비공격가능,6공격선언시1돗테,7hp채우기)
+--유희왕과 다른 룰(1표시형식변경불가,2~3통상소환불가,4체력은수비력,5수비공격가능,6공격선언시1돗테,7hp채우기,9성전유지)
 function Kirafan2.CreamateEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -120,23 +120,17 @@ function Kirafan2.hpop(e,tp,eg,ep,ev,re,r,rp)
 	else
 	Duel.Overlay(c,bg) end
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EVENT_ADJUST)
+	e1:SetCode(EFFECT_SELF_DESTROY)
 	e1:SetCondition(Kirafan2.hp0con)
-	e1:SetOperation(Kirafan2.hp0op)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	Duel.RegisterEffect(e1,tp)
+	c:RegisterEffect(e1)
 end
 function Kirafan2.hp0con(e)
 	if e:GetHandler():GetCounter(0xb01)>0 then return e:GetHandler():GetDefense()<=1 end
 	return e:GetHandler():GetDefense()==0
-end
-function Kirafan2.hp0op(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetHandler():GetOverlayGroup()
-	if #tc>0 then Duel.Remove(tc,POS_FACEUP,REASON_RULE) end	
-	Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end
 function Kirafan2.hpval(e,c)
 	return c:GetOverlayGroup():GetCount()
@@ -155,7 +149,7 @@ end
 function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local g=Duel.SelectMatchingCard(tp,Card.IsFacedown,tp,LOCATION_EXTRA,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_EFFECT)
+	Duel.SendtoGrave(g,REASON_RULE)
 end
 
 --데미지처리(1단일공격,2광역공격,3무량공격,4카운터필요,5히로)
