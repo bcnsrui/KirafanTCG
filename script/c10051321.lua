@@ -2,15 +2,9 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Kirafan2.CreamateCharacter(c)
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_QUICK_F)
-	e1:SetCode(EVENT_CHAINING)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e1:SetCountLimit(1)
-	e1:SetCondition(s.negcon)
-	e1:SetCost(s.negcost)
-	e1:SetTarget(s.negtg)
-	e1:SetOperation(s.negop)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetOperation(s.atklimit)
 	c:RegisterEffect(e1)
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(10050111,5))
@@ -25,38 +19,31 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 	Kirafan6.NoDotteEffcon2(c)
 end
-function s.negcon(e,tp,eg,ep,ev,re,r,rp)
-	return rp~=tp and re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsRace(RACE_ZOMBIE|RACE_FIEND)
-	and Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and re:GetActivateLocation(LOCATION_HAND)
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil)
+function s.earthfilter(c)
+	return c:IsAttribute(ATTRIBUTE_EARTH) and not c:IsLocation(LOCATION_EMZONE)
 end
-function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil,tp) end
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
-end
-function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
-end
-function s.negop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateActivation(ev)
-	Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
+function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
+	local ct=Duel.GetMatchingGroupCount(s.earthfilter,tp,LOCATION_ONFIELD,0,nil)
+	if ct>3 then ct=3 end
+	if deckcount<ct then
+	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.DiscardDeck(tp,ct-deckcount,REASON_EFFECT)
+	else
+	Duel.DiscardDeck(tp,ct,REASON_EFFECT) end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=2
-	if Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,c)
-	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
-	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
-	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
-	dam=3 end
-	Duel.Damage(1-tp,dam,REASON_EFFECT)
+	local dam=Duel.GetMatchingGroupCount(s.earthfilter,tp,LOCATION_ONFIELD,0,nil)
+	Duel.Damage(1-tp,dam+1,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	if #g<=dam+1 then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
-	tc=g:RandomSelect(1-tp,dam)
+	tc=g:RandomSelect(1-tp,dam+1)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)

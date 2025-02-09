@@ -327,7 +327,7 @@ function Kirafan.extrarank(e,c)
 end
 
 --메인 캐릭터 기동효과
---1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인,8선공배페
+--1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인,8선공배페,9체력0파괴
 function Kirafan.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050111,1))
@@ -385,6 +385,13 @@ function Kirafan.MainCharacterSpEff(c)
 	e8:SetRange(LOCATION_EMZONE)
 	e8:SetTargetRange(1,1)
 	c:RegisterEffect(e8)
+	local e9=Effect.CreateEffect(c)
+	e9:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e9:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CANNOT_DISABLE)
+	e9:SetRange(LOCATION_MZONE)
+	e9:SetCode(EVENT_ADJUST)
+	e9:SetOperation(Kirafan.hp0op)
+	c:RegisterEffect(e9)	
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
@@ -451,6 +458,25 @@ function Kirafan.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterFlagEffect(code,RESET_EVENT|RESETS_STANDARD|RESET_CHAIN,0,1)
 	Duel.SetChainLimit(Kirafan3.noeffectchainlm)
 end
+function Kirafan.hp0op(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local tc=g:GetFirst()
+	for tc in aux.Next(g) do
+	local e1=Effect.CreateEffect(tc)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCode(EFFECT_SELF_DESTROY)
+	e1:SetCondition(Kirafan.hp0con)
+	tc:RegisterEffect(e1)
+	end
+end
+function Kirafan.hp0con(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():GetCounter(0xb01)>0 then return e:GetHandler():GetDefense()<=1 end
+	return e:GetHandler():GetDefense()==0
+end
+
+
 
 --리얼리스트의 시간
 function Kirafan.RealistTime(c)

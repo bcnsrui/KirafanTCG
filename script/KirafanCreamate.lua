@@ -119,18 +119,6 @@ function Kirafan2.hpop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Overlay(c,bg2)
 	else
 	Duel.Overlay(c,bg) end
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EFFECT_SELF_DESTROY)
-	e1:SetCondition(Kirafan2.hp0con)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	c:RegisterEffect(e1)
-end
-function Kirafan2.hp0con(e)
-	if e:GetHandler():GetCounter(0xb01)>0 then return e:GetHandler():GetDefense()<=1 end
-	return e:GetHandler():GetDefense()==0
 end
 function Kirafan2.hpval(e,c)
 	return c:GetOverlayGroup():GetCount()
