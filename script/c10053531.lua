@@ -22,12 +22,12 @@ function s.initial_effect(c)
 	e5:SetTarget(Kirafan6.nodamtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon3(c)
 end
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsLocation(LOCATION_EXTRA)
 	and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsPreviousControler(tp)
-	and not Duel.GetCurrentPhase()==PHASE_STANDBY
+	and Duel.GetCurrentPhase()~=PHASE_STANDBY
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
@@ -38,6 +38,10 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local CreamateLv=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
+	if not (main:GetDefense()-CreamateLv>=e:GetHandler():GetLevel() or main:IsCode(10050110)) then
+	return Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(id,0)) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -77,8 +81,11 @@ end
 function s.dottetrigger(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=c:GetOverlayGroup()
+	tg:Merge(c)
 	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
-	Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-	local sonobe=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_REMOVED,0,1,1,nil,RACE_FAIRY)
-	Duel.SpecialSummon(sonobe,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	Duel.SendtoDeck(c,nil,-2,REASON_RULE)
+	local sonobe=Duel.CreateToken(tp,10053531)
+	Duel.Remove(sonobe,POS_FACEUP,REASON_RULE)
+	local sonobe2=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_REMOVED,0,1,1,nil,RACE_FAIRY)
+	Duel.SpecialSummon(sonobe2,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 end
