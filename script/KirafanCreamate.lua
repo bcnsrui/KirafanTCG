@@ -133,6 +133,7 @@ function Kirafan2.hp0con2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return Duel.GetMatchingGroupCount(Card.IsFacedown,tp,LOCATION_EXTRA,0,nil)>0 and
 	c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsLocation(LOCATION_EXTRA)
+	and not Duel.GetCurrentPhase()==PHASE_STANDBY
 end
 function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

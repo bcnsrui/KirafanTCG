@@ -27,6 +27,7 @@ end
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsLocation(LOCATION_EXTRA)
 	and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsPreviousControler(tp)
+	and not Duel.GetCurrentPhase()==PHASE_STANDBY
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
