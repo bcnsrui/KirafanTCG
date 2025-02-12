@@ -128,7 +128,7 @@ end
 function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if tp==Duel.GetTurnPlayer() and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
+	if tp==Duel.GetTurnPlayer() then
 	if deckcount<3 then
 	Duel.Draw(tp,deckcount,REASON_RULE)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
@@ -136,9 +136,10 @@ function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
 	else
 	Duel.Draw(tp,3,REASON_RULE) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
+	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
-	if #g>0 then
-	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end
+	if #g>0 and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
+	Duel.Sendto(g,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN) end end end
 	
 	if tp~=Duel.GetTurnPlayer() and Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
