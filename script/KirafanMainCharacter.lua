@@ -415,13 +415,14 @@ function Kirafan.Dotte10con(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_GRAVE,0)>=10
 end
 function Kirafan.Dotte10op(e,tp,eg,ep,ev,re,r,rp)
+	while Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_GRAVE,0)>=10 do
 	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local last=g:GetFirst()
 	local tc=g:GetNext()
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
 end
 function Kirafan.Refreshcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0
