@@ -214,8 +214,9 @@ function Kirafan.TurnPositionfilter(c)
 end
 function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	if tp~=Duel.GetTurnPlayer() then
 	local sg=Duel.GetMatchingGroup(Kirafan.TurnPositionfilter,tp,LOCATION_MZONE,0,nil)
-	Duel.ChangePosition(sg,POS_FACEUP_ATTACK)
+	Duel.ChangePosition(sg,POS_FACEUP_ATTACK) end
 
 	local ag=Duel.GetFieldGroup(tp,LOCATION_SZONE,0)
 	Duel.Remove(ag,POS_FACEUP,REASON_RULE)
@@ -231,7 +232,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	cg:RemoveCounter(tp,0xb06,1,REASON_EFFECT)
 	cg:RemoveCounter(tp,0xc02,1,REASON_EFFECT)
 	cg:RemoveCounter(tp,0xc01,cg:GetCounter(0xc01),REASON_EFFECT)
-	cg:RemoveCounter(tp,0xc04,cg:GetCounter(0xc04),REASON_EFFECT)	end
+	cg:RemoveCounter(tp,0xc04,cg:GetCounter(0xc04),REASON_EFFECT) end
 	
 	local g=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
 	if tp~=Duel.GetTurnPlayer() and g>5 then
