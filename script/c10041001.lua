@@ -2,7 +2,6 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Kirafan7.BossCharacter(c)
 	Kirafan.TurnPositionMainCharacter(c)
-	Kirafan.MainCharacterEff(c)
 	Kirafan.MainCharacterTextEff(c)
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
@@ -53,6 +52,13 @@ function s.initial_effect(c)
 	e5:SetCondition(s.lgcon)
 	e5:SetOperation(s.lgop)
 	c:RegisterEffect(e5)
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e6:SetCode(EVENT_LEAVE_FIELD)
+	e6:SetRange(LOCATION_EMZONE)
+	e6:SetCondition(s.con2)
+	e6:SetOperation(s.spsummon2)
+	c:RegisterEffect(e6)
 end
 function s.cannotcounter(e,c,tp,ctype)
 	return c:IsControler(1-tp) and (ctype==0xb03 or ctype==0xb04)
@@ -71,7 +77,7 @@ function s.bosstg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10041002,5))
 end
 function s.bossop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_END,0)
+	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE_STEP,1)
 	Duel.SkipPhase(tp,PHASE_MAIN2,RESET_PHASE+PHASE_END,0)
 end
 function s.cfilter(c)
@@ -88,8 +94,7 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 	for ag in aux.Next(ally) do
 	local g=ag:GetOverlayGroup()
 	tc=ag:GetOverlayGroup()
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT) end
-	Duel.Destroy(ally,REASON_EFFECT) end
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT) end end
 	
 	if c:GetDefense()==0 then
 	Duel.SetLP(tp,0)
@@ -99,6 +104,8 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 	if c:GetDefense()==2 then
 	sugar=Duel.CreateToken(tp,10041002)
 	Duel.SpecialSummon(sugar,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	Duel.DiscardDeck(tp,3,REASON_EFFECT)
+	
 	else
 	sugar=Duel.CreateToken(tp,10041003)
 	Duel.SpecialSummon(sugar,0,tp,tp,false,false,POS_FACEUP_ATTACK)	end
@@ -108,9 +115,18 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 	sugar2=Duel.CreateToken(tp,10041005)
 	Duel.SpecialSummon(sugar2,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	
-	if c:IsSetCard(0xd04) or c:IsSetCard(0xd03) then
+	if c:IsSetCard(0xd04) then
+	extrabosshp=8
+	extrabosshp1=3
+
+	elseif c:IsSetCard(0xd03) then
 	extrabosshp=5
 	extrabosshp1=2
+
+	elseif c:IsSetCard(0xd02) then
+	extrabosshp=3
+	extrabosshp1=1
+
 	else
 	extrabosshp=0
 	extrabosshp1=0 end
@@ -143,7 +159,7 @@ end
 function s.resetop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnCount()<3 then
 	local a=0
-	while a<=7 do
+	while a<=2 do
 	sugar1=Duel.CreateToken(tp,10041002)
 	sugar2=Duel.CreateToken(tp,10041003)
 	sugar3=Duel.CreateToken(tp,10041004)
@@ -161,23 +177,23 @@ function s.lgcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
 end
 function s.lgop(e,tp,eg,ep,ev,re,r,rp)
-	local main=Duel.GetMatchingGroup(nil,e:GetHandlerPlayer(),0,LOCATION_EMZONE,nil):GetFirst()
+	local c=e:GetHandler()
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
 	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	local Turn=math.min(Duel.GetTurnCount()+1,10)
-	if main:GetRank()>=20 then
-	difficultyguage=1
-	elseif main:GetRank()>=30 then
-	difficultyguage=2
-	elseif main:GetRank()>=40 then
-	difficultyguage=3
-	elseif main:GetRank()>=50 then
-	difficultyguage=4 
-	else difficultyguage=0 end
-	if deckcount<Turn+difficultyguage then
+	local ct=c:GetAttack()
+	if deckcount<ct then
 	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,Turn+difficultyguage-deckcount,REASON_EFFECT)
+	Duel.DiscardDeck(tp,ct-deckcount,REASON_EFFECT)
 	else
-	Duel.DiscardDeck(tp,Turn+difficultyguage,REASON_EFFECT) end
+	Duel.DiscardDeck(tp,ct,REASON_EFFECT) end
+end
+function s.cfilter2(c)
+	return c:IsCode(10041002,10041004,10041005)
+end
+function s.con2(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter2,1,nil)
+end
+function s.spsummon2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.DiscardDeck(tp,1,REASON_EFFECT)
 end

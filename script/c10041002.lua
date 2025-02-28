@@ -66,20 +66,20 @@ function s.damtg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetTargetCard(sg2) end
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
-	e1:SetValue(2)
-	c:RegisterEffect(e1)
-	elseif (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
+	if (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
 	or (main:IsSetCard(0xd02) and extraatk<=5) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
 	e1:SetValue(1)
+	c:RegisterEffect(e1)
+	elseif (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
+	e1:SetValue(2)
 	c:RegisterEffect(e1)
 	else end
 	
@@ -99,6 +99,10 @@ function s.damop1(e,tp,eg,ep,ev,re,r,rp)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
+	if tg:GetCounter(0xb04)==0 then tg:AddCounter(0xb04,3)
+	elseif tg:GetCounter(0xb04)==1 then tg:AddCounter(0xb04,2)
+	elseif tg:GetCounter(0xb04)==2 then tg:AddCounter(0xb04,1)
+	else end
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
@@ -128,20 +132,20 @@ function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetTargetCard(sg2) end
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
-	e1:SetValue(2)
-	c:RegisterEffect(e1)
-	elseif (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
+	if (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
 	or (main:IsSetCard(0xd02) and extraatk<=5) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
 	e1:SetValue(1)
+	c:RegisterEffect(e1)
+	elseif (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
+	e1:SetValue(2)
 	c:RegisterEffect(e1)
 	else end	
 	
@@ -161,12 +165,29 @@ function s.damop2(e,tp,eg,ep,ev,re,r,rp)
 	local g=tg:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
+	if tg:GetCounter(0xb04)==0 then tg:AddCounter(0xb04,3)
+	elseif tg:GetCounter(0xb04)==1 then tg:AddCounter(0xb04,2)
+	elseif tg:GetCounter(0xb04)==2 then tg:AddCounter(0xb04,1)
+	else end
 	tc=g:RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 	c:AddCounter(0xd01,1)
-	local bg=Duel.GetDecktopGroup(tp,2)
+	
+	local bg=Duel.GetDecktopGroup(tp,attack)
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
+	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
+	if c:GetCounter(0xb02)==0 then
+	if deckcount<attack then
+	local bg=Duel.GetDecktopGroup(tp,deckcount)
+	local bg2=Duel.GetDecktopGroup(tp,attack-deckcount)
 	Duel.Overlay(c,bg)
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.Overlay(c,bg2)
+	else
+	local bg=Duel.GetDecktopGroup(tp,attack)
+	Duel.Overlay(c,bg) end end
+	
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
 
@@ -174,7 +195,7 @@ function s.bossdamcon3(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(s.bossdamfilter,tp,LOCATION_MZONE,0,nil)
 	return Duel.IsBattlePhase() and Duel.GetTurnPlayer()==tp and Duel.GetCurrentChain()==0
 	and Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)>1
-	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)>4
+	and Duel.GetMatchingGroupCount(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)>3
 	and #ally<2 and e:GetHandler():GetCounter(0xd01)<4
 end
 function s.damtg3(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -185,20 +206,20 @@ function s.damtg3(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetChainLimit(Kirafan8.mychainlimit)
 	
 	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
-	e1:SetValue(2)
-	c:RegisterEffect(e1)
-	elseif (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
+	if (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
 	or (main:IsSetCard(0xd02) and extraatk<=5) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
 	e1:SetValue(1)
+	c:RegisterEffect(e1)
+	elseif (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
+	e1:SetValue(2)
 	c:RegisterEffect(e1)
 	else end
 	
@@ -212,7 +233,6 @@ function s.damop3(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp)
 	local attack=c:GetAttack()
 	local dam=attack
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
@@ -221,12 +241,14 @@ function s.damop3(e,tp,eg,ep,ev,re,r,rp)
 	local g=ag:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
+	if ag:GetCounter(0xb04)==0 then ag:AddCounter(0xb04,3)
+	elseif ag:GetCounter(0xb04)==1 then ag:AddCounter(0xb04,2)
+	elseif ag:GetCounter(0xb04)==2 then ag:AddCounter(0xb04,1)
+	else end
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end
 	c:AddCounter(0xd01,1)
-	local bg=Duel.GetDecktopGroup(tp,2)
-	Duel.Overlay(c,bg)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
 
@@ -236,28 +258,39 @@ function s.bossdamcon4(e,tp,eg,ep,ev,re,r,rp)
 	and Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)>0
 	and #ally<2 and e:GetHandler():GetCounter(0xd01)>3
 end
+function s.filter(c)
+	return c:GetCounter(0xb04)>0 and not c:IsLocation(LOCATION_EMZONE)
+end
 function s.damtg4(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
 	if chk==0 then return Duel.IsExistingTarget(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.SetChainLimit(Kirafan8.mychainlimit)
-	
-	local extraatk=Duel.GetRandomNumber(1,10)
-	if (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
+	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetValue(#g)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
-	e1:SetValue(2)
 	c:RegisterEffect(e1)
-	elseif (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
+	
+	local extraatk=Duel.GetRandomNumber(1,10)
+	if (main:IsSetCard(0xd04) and extraatk<=5) or (main:IsSetCard(0xd03) and extraatk<=6)
 	or (main:IsSetCard(0xd02) and extraatk<=5) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
 	e1:SetValue(1)
+	c:RegisterEffect(e1)
+	elseif (main:IsSetCard(0xd04) and extraatk>=6) or (main:IsSetCard(0xd03) and extraatk>=9) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_CHAIN)
+	e1:SetValue(2)
 	c:RegisterEffect(e1)
 	else end
 	
@@ -276,10 +309,6 @@ function s.damop4(e,tp,eg,ep,ev,re,r,rp)
 	local g=ag:GetOverlayGroup()
 	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
-	if ag:GetCounter(0xb04)==0 then ag:AddCounter(0xb04,3)
-	elseif ag:GetCounter(0xb04)==1 then ag:AddCounter(0xb04,2)
-	elseif ag:GetCounter(0xb04)==2 then ag:AddCounter(0xb04,1)
-	else end
 	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end end

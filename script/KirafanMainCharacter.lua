@@ -46,6 +46,14 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)>0
 	then return Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
+
+	if Duel.GetTurnPlayer()==tp then
+	local extra=Duel.GetFieldGroup(tp,LOCATION_EXTRA,0)
+	Duel.SendtoDeck(extra,nil,-2,REASON_RULE)
+	end
+	
+	if Duel.GetMatchingGroupCount(Card.IsSetcard,tp,LOCATION_EXTRA,0,0xc02)>0 then return end
+	
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)==0 then
 	Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(10050114,6))
 	Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(10050114,6))
