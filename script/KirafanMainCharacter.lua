@@ -159,8 +159,6 @@ function Kirafan.Dottecon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
 end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.DiscardDeck(tp,1,REASON_RULE)
-	
 	if Duel.GetTurnCount()>2 then
 	if Duel.SelectYesNo(tp,aux.Stringid(10050111,0)) then
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND+LOCATION_MZONE,0,0,1,e:GetHandler())
@@ -401,7 +399,14 @@ function Kirafan.MainCharacterSpEff(c)
 	e9:SetRange(LOCATION_MZONE)
 	e9:SetCode(EVENT_ADJUST)
 	e9:SetOperation(Kirafan.hp0op)
-	c:RegisterEffect(e9)	
+	c:RegisterEffect(e9)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e0:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CANNOT_DISABLE)
+	e0:SetRange(LOCATION_MZONE)
+	e0:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e0:SetOperation(Kirafan.hp0op2)
+	c:RegisterEffect(e0)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
@@ -483,10 +488,22 @@ function Kirafan.hp0op(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function Kirafan.hp0con(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetCounter(0xb01)>0 then return e:GetHandler():GetDefense()<=1 end
-	return e:GetHandler():GetDefense()==0
+	if e:GetHandler():GetCounter(0xb01)>0 then
+	return e:GetHandler():GetDefense()<=1 and e:GetHandler():IsSetCard(0xa03) end
+	return e:GetHandler():GetDefense()==0 and e:GetHandler():IsSetCard(0xa03)
 end
-
+function Kirafan.hp0op2(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local tc=g:GetFirst()
+	for tc in aux.Next(g) do
+	local e1=Effect.CreateEffect(tc)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa03)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	tc:RegisterEffect(e1)
+	end
+end
 
 
 --리얼리스트의 시간
