@@ -122,8 +122,8 @@ function Kirafan.DrawStMainCharacter(c)
 	c:RegisterEffect(e4)
 end
 function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetTurnPlayer()==tp and Duel.GetTurnCount()<3 then return end
-	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,3)
+	if Duel.GetTurnCount()<3 then return end
+	if Duel.GetTurnPlayer()==tp then Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,3) end
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
