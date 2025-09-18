@@ -14,30 +14,23 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,1,nil)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)>0 then
-	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp) end
+	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp,2)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

@@ -20,5 +20,5 @@ function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.knconfilter,1,nil,tp) and Duel.GetTurnPlayer()~=tp
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
+	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1)
 end

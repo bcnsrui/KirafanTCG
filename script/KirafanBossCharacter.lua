@@ -13,29 +13,16 @@ end
 --듀얼 개시시의 효과
 function Kirafan7.DuelStartMainCharacter(c)
 	local e1=Effect.CreateEffect(c)
-	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PHASE+PHASE_DRAW)
-	e1:SetRange(LOCATION_EXTRA)
+	e1:SetRange(LOCATION_EMZONE)
 	e1:SetCountLimit(1)
 	e1:SetOperation(Kirafan7.DuelStartop)
 	c:RegisterEffect(e1)
 end
 function Kirafan7.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	if Duel.GetTurnPlayer()~=tp then
-	local main2=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
-	local bg=Duel.GetDecktopGroup(1-tp,2)
-	Duel.Sendto(bg,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN)
-	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	Duel.SendtoDeck(main,nil,-2,REASON_RULE)
-	Duel.SpecialSummon(c,0,tp,tp,true,true,POS_FACEUP_ATTACK)
-	shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	local sg2=Duel.GetFieldGroup(tp,LOCATION_EXTRA,0)
-	Duel.SendtoDeck(sg2,nil,-2,REASON_RULE)
-	--난이도 설정
 	Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10041001,2))
 	local opt=Duel.SelectOption(1-tp,aux.Stringid(10041001,4),aux.Stringid(10041001,6),aux.Stringid(10041001,8),(aux.Stringid(10041001,10)))
 	if opt==0 then
@@ -77,8 +64,7 @@ function Kirafan7.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(0xd04)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e1)
-	Kirafan8.difficulthint4(e,tp,eg,ep,ev,re,r,rp) end	
-	else Duel.SendtoDeck(c,nil,-2,REASON_RULE) end
+	Kirafan8.difficulthint4(e,tp,eg,ep,ev,re,r,rp) end
 end
 
 --1배틀로 직행,2배틀 페이즈 강제 소환

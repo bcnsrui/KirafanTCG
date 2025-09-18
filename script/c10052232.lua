@@ -15,11 +15,11 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.nodamtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
@@ -28,27 +28,15 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
 	local enemy=Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)
 	if enemy-ally>0 then
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(enemy-ally)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	e:GetHandler():RegisterEffect(e1) end
+	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,e:GetHandler(),enemy-ally) end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local ag=enemy:GetFirst()
-	for ag in aux.Next(enemy) do
-	local g=ag:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end end
-	Duel.Draw(tp,1,REASON_EFFECT)
+	for wg in enemy:Iter() do
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,wg,dam) end
+	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

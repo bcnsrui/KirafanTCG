@@ -13,14 +13,14 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
+	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -34,12 +34,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local tg=Duel.GetFirstTarget()
 	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	if Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,c)
 	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)

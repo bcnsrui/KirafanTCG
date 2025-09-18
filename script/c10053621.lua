@@ -24,11 +24,11 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.fccondition(e)
 	local tp=e:GetHandlerPlayer()
@@ -48,11 +48,6 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=2
 	if Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,LOCATION_SZONE,0,nil)==0 then dam=3 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

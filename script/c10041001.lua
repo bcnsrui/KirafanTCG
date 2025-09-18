@@ -104,7 +104,7 @@ function s.spsummon(e,tp,eg,ep,ev,re,r,rp)
 	if c:GetDefense()==2 then
 	sugar=Duel.CreateToken(tp,10041002)
 	Duel.SpecialSummon(sugar,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	Duel.DiscardDeck(tp,3,REASON_EFFECT)
+	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,3)
 	
 	else
 	sugar=Duel.CreateToken(tp,10041003)
@@ -178,15 +178,8 @@ function s.lgcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.lgop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
-	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	local ct=c:GetAttack()
-	if deckcount<ct then
-	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,ct-deckcount,REASON_EFFECT)
-	else
-	Duel.DiscardDeck(tp,ct,REASON_EFFECT) end
+	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,ct)
 end
 function s.cfilter2(c)
 	return c:IsCode(10041002,10041004,10041005)
@@ -195,5 +188,5 @@ function s.con2(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter2,1,nil)
 end
 function s.spsummon2(e,tp,eg,ep,ev,re,r,rp)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,1)
 end

@@ -8,16 +8,11 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCondition(Kirafan6.spcreamatecon)
-	e1:SetCost(s.cost)
+	e1:SetCost(Kirafan2.spcost(3))
 	e1:SetTarget(s.tg)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
 	Kirafan3.SpCreamateCharacter(c)
-end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
-	Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
-	Kirafan6.summonhint(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.filter(c)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsAbleToHand()

@@ -13,11 +13,11 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.filter(c)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_WARRIOR+RACE_FAIRY) and c:IsAbleToHand()
@@ -35,25 +35,10 @@ end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local dam=2
-	local g=Duel.GetMatchingGroupCount(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,nil)
-	if g==0 then
-	elseif Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,c)
-	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
-	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
-	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
-	dam=4
-	if Duel.IsExistingMatchingCard(Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,c)
-	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
-	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
-	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
-	dam=6 end end
+	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,0,2,c)
+	Duel.ChangePosition(ag,POS_FACEUP_DEFENSE)
+	local dam=#ag*2+2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

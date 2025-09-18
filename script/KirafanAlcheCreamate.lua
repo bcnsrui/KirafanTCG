@@ -3,7 +3,7 @@ Kirafan4={}
 
 --덱에서 돗테오키 존으로 보내졌을 때
 function Kirafan4.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA+LOCATION_DECK+LOCATION_HAND)
+	return e:GetHandler():IsPreviousLocation(LOCATION_DECK+LOCATION_HAND)
 end
 
 --이번 턴 아군 단일의 공격력+1
@@ -19,13 +19,8 @@ function Kirafan4.ATKUPDotteTrigger(c)
 end
 function Kirafan4.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(1)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	tc:RegisterEffect(e1)
+	local tg=Duel.GetFirstTarget()
+	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,tg,1)
 end
 
 --아군 단일의 체력+1
@@ -57,7 +52,7 @@ function Kirafan4.DOTTEDotteTrigger(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan4.dotteop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
+	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,1)
 end
 
 --드로우+1 패를 1장 마을로 보낸다.
@@ -72,7 +67,7 @@ function Kirafan4.DrawDotteTrigger(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan4.drawop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
+	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
 	local tg=g:GetFirst()

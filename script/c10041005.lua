@@ -59,12 +59,7 @@ function s.damop1(e,tp,eg,ep,ev,re,r,rp)
 	local dam=attack
 	Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	c:AddCounter(0xd01,1)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
@@ -109,12 +104,7 @@ function s.damop2(e,tp,eg,ep,ev,re,r,rp)
 	local dam=attack
 	Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	c:AddCounter(0xd01,1)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

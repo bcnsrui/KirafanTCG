@@ -16,11 +16,11 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost1)
+	e5:SetCost(Kirafan2.dottecost(1))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon1(c)
+	Kirafan6.NoDotteEffcon(c,1)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -29,14 +29,7 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsFaceup() and e:GetHandler():IsRelateToBattle() then
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD|RESET_PHASE|PHASE_DAMAGE)
-	e1:SetValue(1)
-	e:GetHandler():RegisterEffect(e1) end
+	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_DAMAGE,1,e:GetHandler(),1) end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -44,11 +37,6 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=1
 	if tg:IsAttribute(ATTRIBUTE_DARK) then dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

@@ -16,39 +16,29 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.fccondition(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetMatchingGroupCount(s.lightfilter,tp,LOCATION_ONFIELD,0,nil)>=3
 end
-function s.lightfilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE)
-end
-function s.darkfilter(c)
-	return c:IsAttribute(ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE)
+function s.filter(c)
+	return c:IsAttribute(ATTRIBUTE_LIGHT|ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
-	local sun=Duel.GetMatchingGroupCount(s.lightfilter,tp,LOCATION_ONFIELD,0,c)
-	local moon=Duel.GetMatchingGroupCount(s.darkfilter,tp,LOCATION_ONFIELD,0,c)
-	local sun1=Duel.GetMatchingGroupCount(s.lightfilter,tp,0,LOCATION_ONFIELD,nil)
-	local moon1=Duel.GetMatchingGroupCount(s.darkfilter,tp,0,LOCATION_ONFIELD,nil)
-	if sun+moon>0 and sun1+moon1>0 then dam=4
-	elseif sun1+moon1>0 then dam=3
-	elseif sun+moon>0 then dam=2
+	local ally=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_ONFIELD,0,c)
+	local enemy=Duel.GetMatchingGroupCount(s.filter,tp,0,LOCATION_ONFIELD,c)
+	if ally>0 and enemy>0 then dam=4
+	elseif enemy>0 then dam=3
+	elseif ally>0 then dam=2
 	else dam=1 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

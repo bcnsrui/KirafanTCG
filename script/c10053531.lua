@@ -18,11 +18,11 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost3)
+	e5:SetCost(Kirafan2.dottecost(3))
 	e5:SetTarget(Kirafan6.nodamtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon3(c)
+	Kirafan6.NoDotteEffcon(c,3)
 end
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsLocation(LOCATION_EXTRA)
@@ -58,16 +58,10 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=1
 	if c:IsSetCard(0xb02) then dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local ag=enemy:GetFirst()
-	for ag in aux.Next(enemy) do
-	local g=ag:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end end
+	for wg in enemy:Iter() do
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,wg,dam) end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
-	if c:IsSetCard(0xb02) then Duel.Draw(tp,1,REASON_RULE) end
+	if c:IsSetCard(0xb02) then Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1) end
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)

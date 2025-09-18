@@ -13,20 +13,16 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
-	Kirafan6.NoDotteEffcon2(c)	
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.SelectMatchingCard(tp,Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-	tc:RemoveCounter(tp,0xb01,tc:GetCounter(0xb01),REASON_EFFECT)
-	tc:RemoveCounter(tp,0xb02,tc:GetCounter(0xb02),REASON_EFFECT)
-	tc:RemoveCounter(tp,0xb03,tc:GetCounter(0xb03),REASON_EFFECT)
-	tc:RemoveCounter(tp,0xb04,tc:GetCounter(0xb04),REASON_EFFECT)
-	tc:RemoveCounter(tp,0xb05,tc:GetCounter(0xb05),REASON_EFFECT)
-	tc:RemoveCounter(tp,0xb06,tc:GetCounter(0xb06),REASON_EFFECT)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,6))
+	local g=Duel.SelectMatchingCard(tp,Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil)
+	Kirafan6.statusreset(e,tp,eg,ep,ev,re,r,rp,g)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -34,11 +30,6 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=2
 	if Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>=2 then dam=3 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

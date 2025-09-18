@@ -20,13 +20,5 @@ function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.knconfilter,1,nil,tp) and Duel.GetTurnPlayer()~=tp
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,0,nil)
-	local deckcount=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
-	if deckcount==1 then
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
-	Duel.DiscardDeck(tp,1,REASON_EFFECT)
-	else
-	Duel.DiscardDeck(tp,2,REASON_EFFECT) end
+    Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,2)
 end

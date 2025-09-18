@@ -51,5 +51,5 @@ end
 function s.handop5(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
 	local tc=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_DECK,0,0,#g,nil)
-	Duel.Sendto(tc,LOCATION_EXTRA,REASON_RULE,POS_FACEDOWN)
+	Duel.Overlay(e:GetHandler(),tc)
 end

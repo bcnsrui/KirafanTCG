@@ -8,7 +8,7 @@ function s.initial_effect(c)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCondition(Kirafan6.damcon)
-	e5:SetCost(Kirafan2.dottecost2)
+	e5:SetCost(Kirafan2.dottecost(2))
 	e5:SetTarget(Kirafan6.damtg)
 	e5:SetOperation(s.damop)
 	c:RegisterEffect(e5)
@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e6:SetTarget(Kirafan6.nodamtg)
 	e6:SetOperation(s.damop2)
 	c:RegisterEffect(e6)	
-	Kirafan6.NoDotteEffcon2(c)
+	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -27,14 +27,10 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	and Duel.SelectYesNo(tp,aux.Stringid(10050111,3)) then
 	local ag=Duel.SelectMatchingCard(tp,Kirafan6.loadfactorfilter,tp,LOCATION_MZONE,0,1,1,c)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
-	dam=5 end
+	dam=4 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -46,13 +42,7 @@ function s.damop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(ag:GetFirst(),POS_FACEUP_DEFENSE)
 	dam=2 end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
-	local ag=enemy:GetFirst()
-	for ag in aux.Next(enemy) do
-	local g=ag:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	else
-	tc=ag:GetOverlayGroup():RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end end
+	for wg in enemy:Iter() do
+	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,wg,dam) end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
