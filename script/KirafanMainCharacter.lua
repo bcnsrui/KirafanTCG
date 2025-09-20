@@ -302,8 +302,15 @@ function Kirafan.extrarank(e,c)
 end
 
 --메인 캐릭터 기동효과
---1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인,8~9체력0파괴
+--0선턴배패,1패정렬,2돗테오키제한10,3리프레시,4무조건공격,5~6라이프설정,7헛체인,8~9체력0파괴
 function Kirafan.MainCharacterSpEff(c)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_FIELD)
+	e0:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CANNOT_DISABLE)
+	e0:SetCode(EFFECT_BP_FIRST_TURN)
+	e0:SetRange(LOCATION_EMZONE)
+	e0:SetTargetRange(1,1)
+	c:RegisterEffect(e0)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050111,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
