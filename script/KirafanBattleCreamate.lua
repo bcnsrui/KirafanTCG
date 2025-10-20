@@ -13,6 +13,7 @@ function Kirafan6.spcreamatecon(e,tp,eg,ep,ev,re,r,rp)
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0) or
 	(Duel.GetTurnPlayer()~=tp and (Duel.GetCurrentPhase()==PHASE_BATTLE_START or
 	Duel.GetCurrentPhase()==PHASE_BATTLE_STEP or Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL))
+	and e:GetHandler():GetCounter(0xb03)==0
 end
 
 --배틀 크리에메이트 돗테오키 발동조건(대상)
@@ -60,7 +61,7 @@ end
 
 --자신 돗테오키 게이지 줄이기
 function Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp,dotte)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,nil)
+	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local consumedotte=0
 	local dotte2=(math.min(#g,dotte))
 	while consumedotte<dotte2 do
@@ -75,7 +76,7 @@ end
 
 --상대 돗테오키 게이지 줄이기
 function Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp,dotte)
-	local g=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,nil)
+	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_GRAVE,nil)
 	local consumeenemydotte=0
 	local dotte2=(math.min(#g,dotte))
 	while consumeenemydotte<dotte2 do
