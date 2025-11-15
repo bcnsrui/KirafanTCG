@@ -30,7 +30,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=Duel.GetFirstTarget()
 	local dam=2
-	if Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,LOCATION_ONFIELD,0,nil)>=3 then dam=3 end
+	if Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>=3 then dam=4
+	elseif Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,LOCATION_ONFIELD,0,nil)>=3 then dam=3 end	
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)

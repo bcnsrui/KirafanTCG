@@ -18,8 +18,11 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local con=Duel.GetMatchingGroupCount(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	if con>2 then
-	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,2)
-	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,1)
+	Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,3)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,10))
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
+	local tg=g:GetFirst()
+	Duel.SendtoGrave(tg,REASON_RULE)
 	elseif con==2 then Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,2)
 	else Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1) end
 end
