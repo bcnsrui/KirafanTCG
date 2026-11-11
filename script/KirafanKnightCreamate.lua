@@ -35,6 +35,28 @@ function Kirafan5.atval(e,re,rp)
 	if rp~=e:GetHandlerPlayer() and re:GetActivateLocation()==LOCATION_MZONE then return true end
 end
 
+--나이트 단일 회복 돗테오키(상대 턴 카운터 타이밍에도 발동 가능)
+function Kirafan5.KnightHealDotte(c,heal)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(Kirafan5.knighthealcon)
+	e1:SetCost(Kirafan2.dottecost(1))
+	e1:SetTarget(Kirafan3.sghealtg)
+	e1:SetOperation(Kirafan5.knighthealop(heal))
+	c:RegisterEffect(e1)
+end
+function Kirafan5.knighthealcon(e,tp,eg,ep,ev,re,r,rp)
+	return not e:GetHandler():IsDefensePos() and Kirafan6.spcreamatecon(e,tp,eg,ep,ev,re,r,rp)
+end
+function Kirafan5.knighthealop(heal)
+	return function(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan3.sghealop(heal)(e,tp,eg,ep,ev,re,r,rp)
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp) end
+end
+
 --나이트 1뎀 돗테오키
 function Kirafan5.KnightDotte1(c)
 	local e1=Effect.CreateEffect(c)
@@ -56,10 +78,10 @@ function Kirafan5.Knightdamop1(e,tp,eg,ep,ev,re,r,rp)
 	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	if #g<=dam then Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 	else
 	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
 	end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
@@ -85,10 +107,10 @@ function Kirafan5.Knightdamop2(e,tp,eg,ep,ev,re,r,rp)
 	local dam=2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	if #g<=dam then Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 	else
 	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
 	end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

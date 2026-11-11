@@ -46,4 +46,5 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,dam)
 	local enemy=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	Kirafan6.statuseff(e,tp,eg,ep,ev,re,r,rp,enemy,0xb01,1)
+	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end

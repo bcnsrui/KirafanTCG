@@ -26,6 +26,9 @@ function s.fccondition(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetMatchingGroupCount(s.lightfilter,tp,LOCATION_ONFIELD,0,nil)>=3
 end
+function s.lightfilter(c)
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsLocation(LOCATION_EMZONE)
+end
 function s.filter(c)
 	return c:IsAttribute(ATTRIBUTE_LIGHT|ATTRIBUTE_DARK) and not c:IsLocation(LOCATION_EMZONE)
 end

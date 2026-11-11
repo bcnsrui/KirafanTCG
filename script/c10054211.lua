@@ -26,6 +26,7 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	Kirafan6.statusreset(e,tp,eg,ep,ev,re,r,rp,ally)
+	Kirafan6.guagetrigger(e:GetHandler())
 end
 function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -43,10 +44,12 @@ function s.dotteop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetRange(LOCATION_SZONE)
 	e1:SetCode(EFFECT_CANNOT_PLACE_COUNTER)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(0,1)
+	e1:SetTargetRange(1,1)
 	e1:SetTarget(s.cannotcounter)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	c:RegisterEffect(e1)
 end
 function s.cannotcounter(e,c,tp,ctype)
-	return ctype==0xb01 or ctype==0xb02 or ctype==0xb03 or ctype==0xb04 or ctype==0xb05 or ctype==0xb06
+	return c and c:IsControler(e:GetHandlerPlayer()) and c:IsLocation(LOCATION_MZONE)
+	and (ctype==0xb01 or ctype==0xb02 or ctype==0xb03 or ctype==0xb04 or ctype==0xb05 or ctype==0xb06)
 end

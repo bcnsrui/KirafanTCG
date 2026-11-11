@@ -45,9 +45,6 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EMZONE,0,nil)>0
 	then return Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE) end
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
-	if Duel.GetMatchingGroupCount(Card.IsSetCard,tp,0,LOCATION_EXTRA,nil,0xc02)==1 then
-	local boss=Duel.GetMatchingGroup(Card.IsSetCard,tp,0,LOCATION_EXTRA,nil,0xc02)
-	Duel.SpecialSummon(boss,0,1-tp,1-tp,true,true,POS_FACEUP_ATTACK) end
 	local extra=Duel.GetFieldGroup(tp,LOCATION_EXTRA,0)
 	Duel.SendtoDeck(extra,nil,-2,REASON_RULE)
 
@@ -122,12 +119,14 @@ function Kirafan.DrawStMainCharacter(c)
 	c:RegisterEffect(e4)
 end
 function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetTurnCount()<3 then return end
+	local turn=Duel.GetTurnCount()
+	--후공 첫 턴: 1장 드로우
+	if turn==2 and Duel.GetTurnPlayer()==tp then return Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1) end
+	if turn<3 then return end
 	if Duel.GetTurnPlayer()==tp then Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,3) end
-	if Duel.GetMatchingGroupCount(nil,tp,LOCATION_EXTRA,0,nil)<=11 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
-	Duel.Overlay(e:GetHandler(),g) end
+	Duel.Overlay(e:GetHandler(),g)
 end
 function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.firafandotteop(e,tp,eg,ep,ev,re,r,rp,1)
@@ -138,8 +137,8 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc:IsLocation(LOCATION_MZONE) then
 	local tg=tc:GetOverlayGroup()
-	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
-	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
+	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(tc,POS_FACEDOWN,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE)
 	else Duel.SendtoGrave(tc,REASON_RULE) end
 end
@@ -192,7 +191,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(sg,POS_FACEUP_ATTACK) end
 
 	local ag=Duel.GetFieldGroup(tp,LOCATION_SZONE,0)
-	Duel.Remove(ag,POS_FACEUP,REASON_RULE)
+	Duel.Remove(ag,POS_FACEDOWN,REASON_RULE)
 
 	local enemy2=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local cg=enemy2:GetFirst()
@@ -211,7 +210,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	if tp~=Duel.GetTurnPlayer() and g>5 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,2))
 	local tg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,g-5,g-5,nil)
-	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
+	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
 	else end
 	
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
@@ -374,6 +373,15 @@ function Kirafan.MainCharacterSpEff(c)
 	e9:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e9:SetOperation(Kirafan.hp0op2)
 	c:RegisterEffect(e9)
+	--선공 첫 턴에는 통상 공격할 수 없다 (통상 공격으로 돗테오키 게이지를 얻을 수 없다)
+	local e10=Effect.CreateEffect(c)
+	e10:SetType(EFFECT_TYPE_FIELD)
+	e10:SetCode(EFFECT_CANNOT_ATTACK_ANNOUNCE)
+	e10:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e10:SetRange(LOCATION_EMZONE)
+	e10:SetTargetRange(LOCATION_MZONE,0)
+	e10:SetCondition(function() return Duel.GetTurnCount()==1 end)
+	c:RegisterEffect(e10)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsMainPhase()
@@ -403,7 +411,7 @@ function Kirafan.Dotte10op(e,tp,eg,ep,ev,re,r,rp)
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
+	Duel.Remove(last,POS_FACEDOWN,REASON_EFFECT) end
 end
 function Kirafan.Refreshcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0
@@ -441,16 +449,21 @@ function Kirafan.noeffecttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterFlagEffect(code,RESET_EVENT|RESETS_STANDARD|RESET_CHAIN,0,1)
 	Duel.SetChainLimit(Kirafan3.noeffectchainlm)
 end
+--EVENT_ADJUST는 행동마다 여러 번 발생하므로 카드마다 한 번만 등록한다
+function Kirafan.hp0filter(c)
+	return Kirafan6.NoEmFzonefilter(c) and c:GetFlagEffect(10050190)==0
+end
 function Kirafan.hp0op(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	local tc=g:GetFirst()
+	local g=Duel.GetMatchingGroup(Kirafan.hp0filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	for tc in aux.Next(g) do
+	tc:RegisterFlagEffect(10050190,RESET_EVENT+RESETS_STANDARD,0,1)
 	local e1=Effect.CreateEffect(tc)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_SELF_DESTROY)
 	e1:SetCondition(Kirafan.hp0con)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	tc:RegisterEffect(e1)
 	end
 end
@@ -459,10 +472,13 @@ function Kirafan.hp0con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetDefense()<=1 and e:GetHandler():IsSetCard(0xa03) end
 	return e:GetHandler():GetDefense()==0 and e:GetHandler():IsSetCard(0xa03)
 end
+function Kirafan.hp0filter2(c)
+	return Kirafan6.NoEmFzonefilter(c) and c:GetFlagEffect(10050191)==0
+end
 function Kirafan.hp0op2(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	local tc=g:GetFirst()
+	local g=Duel.GetMatchingGroup(Kirafan.hp0filter2,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	for tc in aux.Next(g) do
+	tc:RegisterFlagEffect(10050191,RESET_EVENT+RESETS_STANDARD,0,1)
 	local e1=Effect.CreateEffect(tc)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ADD_SETCODE)
@@ -526,10 +542,11 @@ function Kirafan.MainCharacterTextEff(c)
 	c:RegisterEffect(e1)
 end
 function Kirafan.hintcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsSetCard(0xc01)
+	return e:GetHandler():IsSetCard(0xc01) and e:GetHandler():GetFlagEffect(10050192)==0
 end
 function Kirafan.hintop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	c:RegisterFlagEffect(10050192,RESET_EVENT+RESETS_STANDARD,0,1)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10050112,3))
 	e1:SetType(EFFECT_TYPE_SINGLE)

@@ -36,8 +36,8 @@ function Kirafan4.HPDotteTrigger(c)
 end
 function Kirafan4.hpop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	local bg=Duel.GetDecktopGroup(tp,1)
-	Duel.Overlay(tc,bg)
+	if not tc then return end
+	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,1)
 end
 
 --돗테오키 게이지+1
@@ -71,5 +71,5 @@ function Kirafan4.drawop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
 	local tg=g:GetFirst()
-	Duel.Remove(tg,POS_FACEUP,REASON_EFFECT)	
+	Duel.Remove(tg,POS_FACEDOWN,REASON_EFFECT)	
 end

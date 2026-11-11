@@ -17,7 +17,8 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()	
 	local tc=Duel.GetFirstTarget()
-	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,e:GetHandler(),1)
+	if tc and tc:IsRelateToEffect(e) then
+	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,tc,1) end
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)

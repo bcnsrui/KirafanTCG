@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	Kirafan3.SpCreamateCharacter(c)
 end
 function s.lightfilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and not c:IsLocation(LOCATION_EMZONE)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and Kirafan3.Healtargetfilter(c)
 end
 function s.dottetg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end

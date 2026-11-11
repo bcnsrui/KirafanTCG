@@ -48,5 +48,9 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 end
 function s.healtriggerop(e,tp,eg,ep,ev,re,r,rp)
-	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),1)
+	local c=e:GetHandler()
+	e:Reset()
+	if c:GetCounter(0xb02)>0 then return end
+	local heal=math.max(0,math.min(1,c:GetBaseDefense()-c:GetDefense()))
+	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,heal)
 end

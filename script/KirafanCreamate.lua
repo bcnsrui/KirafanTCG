@@ -95,6 +95,12 @@ function Kirafan2.CreamateEff(c)
 	e9:SetCondition(Kirafan2.hp0con2)
 	e9:SetOperation(Kirafan2.hp0op2)
 	c:RegisterEffect(e9)
+	local e10=Effect.CreateEffect(c)
+	e10:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e10:SetCode(EVENT_LEAVE_FIELD)
+	e10:SetCondition(Kirafan2.hpleftcon)
+	e10:SetOperation(Kirafan2.hpleftop)
+	c:RegisterEffect(e10)
 end
 function Kirafan2.AttackDotteop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsSetCard(0xb01) then return end
@@ -103,6 +109,12 @@ end
 function Kirafan2.hpop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local hp=c:GetBaseDefense()
+	--체력은 덱에서, 덱이 비면 마을을 리프레시해서 채우므로 둘을 합쳐도 모자라면 패배
+	local p=c:GetControler()
+	if Duel.GetFieldGroupCount(p,LOCATION_DECK,0)+Duel.GetFieldGroupCount(p,LOCATION_REMOVED,0)<hp then
+	Duel.Hint(HINT_MESSAGE,p,aux.Stringid(10050114,8))
+	Duel.Hint(HINT_MESSAGE,1-p,aux.Stringid(10050114,9))
+	return Duel.SetLP(p,0) end
 	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,hp)
 end
 function Kirafan2.hpval(e,c)
@@ -124,8 +136,19 @@ function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local g=main:GetOverlayGroup()
-	tc=g:RandomSelect(tp,1)
-	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
+	--쓰러진 배틀 크리에메이트마다 1장, 마을로 보낼 성채석은 그 플레이어가 고른다
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local tc=g:Select(tp,1,1,nil)
+	Duel.Remove(tc,POS_FACEDOWN,REASON_RULE)
+end
+
+--나약함으로 체력 1에서 쓰러지면 체력 카드가 붙은 채 엑스트라 덱(성전)으로 가므로, 남은 체력 카드도 마을로 보낸다
+function Kirafan2.hpleftcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_EXTRA) and c:GetOverlayCount()>0
+end
+function Kirafan2.hpleftop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Remove(e:GetHandler():GetOverlayGroup(),POS_FACEDOWN,REASON_RULE)
 end
 
 --데미지처리(1무량공격,2카운터필요,3단일공격,4광역공격,5히로)
@@ -217,7 +240,7 @@ function Kirafan2.Creamaterecovery(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
 	e1:SetCondition(Kirafan2.recoverycon2)
-	e1:SetOperation(Kirafan3.sghealop(2))
+	e1:SetOperation(Kirafan2.recoveryop)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -236,6 +259,12 @@ function Kirafan2.Creamaterecovery(c)
 end
 function Kirafan2.recoverycon2(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetCounter(0xc02)>0
+end
+function Kirafan2.recoveryop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:GetCounter(0xb02)>0 then return end
+	local heal=math.max(0,math.min(2,c:GetBaseDefense()-c:GetDefense()))
+	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,heal)
 end
 function Kirafan2.sleepcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetCounter(0xb05)>0

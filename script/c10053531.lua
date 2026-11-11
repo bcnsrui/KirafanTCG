@@ -7,7 +7,6 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e1:SetCode(EVENT_TO_DECK)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCountLimit(1)
 	e1:SetCondition(s.spcon)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
@@ -72,11 +71,24 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetOperation(s.dottetrigger)
 	c:RegisterEffect(e1)
 end
+function s.knfilter(c,lv)
+	return c:IsRace(RACE_FAIRY) and c:GetLevel()<=lv
+end
 function s.dottetrigger(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=c:GetOverlayGroup()
-	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
-	Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-	local sonobe=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_REMOVED,0,1,1,nil,RACE_FAIRY)
+	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(c,POS_FACEDOWN,REASON_EFFECT)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if not main then return end
+	local lv=main:GetDefense()-Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,0,nil):GetSum(Card.GetLevel)
+	if main:IsCode(10050110) then lv=99 end
+	if not Duel.IsExistingMatchingCard(s.knfilter,tp,LOCATION_REMOVED,0,1,nil,lv) then
+	return Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(id,0)) end
+	local sonobe=Duel.SelectMatchingCard(tp,s.knfilter,tp,LOCATION_REMOVED,0,1,1,nil,lv)
+	if #sonobe==0 then return end
+	--뒷면으로 제외된 카드는 특수 소환할 수 없어서 패를 거쳐 소환한다
+	Duel.SendtoHand(sonobe,nil,REASON_EFFECT)
 	Duel.SpecialSummon(sonobe,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 end

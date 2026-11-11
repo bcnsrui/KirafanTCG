@@ -5,6 +5,7 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCondition(Kirafan6.spcreamatecon)
 	e1:SetCost(Kirafan2.spcost(3))
@@ -16,8 +17,8 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()	
 	local tc=Duel.GetFirstTarget()
-	Kirafan6.statusreset(e,tp,eg,ep,ev,re,r,rp,tc)
-	Kirafan6.drawtrigger(c)
+	if tc and tc:IsRelateToEffect(e) then
+	Kirafan6.statusreset(e,tp,eg,ep,ev,re,r,rp,tc) end
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_PHASE+PHASE_BATTLE)

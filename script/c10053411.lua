@@ -18,8 +18,6 @@ function s.knconfilter(c,tp)
 end
 function s.kncon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.knconfilter,1,nil,tp) and Duel.GetTurnPlayer()~=tp
-	and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,1,nil)
-	and Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)>0
 end
 function s.knop(e,tp,eg,ep,ev,re,r,rp)
 	Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp,2)

@@ -26,7 +26,7 @@ function s.initial_effect(c)
 	Kirafan6.NoDotteEffcon(c,2)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsDefensePos()
+	return e:GetHandler():IsDefensePos() and Duel.GetAttacker()==e:GetHandler()
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_ATTACK)

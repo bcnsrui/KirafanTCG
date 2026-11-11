@@ -30,7 +30,7 @@ function s.filter(c)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,100,e:GetHandler(),#g)
+	Kirafan6.atkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,3,e:GetHandler(),#g)
 	for tc in aux.Next(g) do
 	tc:RemoveCounter(tp,0xb04,tc:GetCounter(0xb04),REASON_EFFECT) end
 end

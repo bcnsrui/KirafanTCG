@@ -29,7 +29,7 @@ function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
 	local tg=g:GetFirst()
-	Duel.Remove(tg,POS_FACEUP,REASON_EFFECT)
+	Duel.Remove(tg,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)

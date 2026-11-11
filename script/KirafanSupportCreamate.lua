@@ -54,9 +54,14 @@ function Kirafan3.noeffectchainlm(te,rp,tp)
 	return not te:GetHandler():IsCode(10051321)
 end
 
---불행 제외
+--불행 제외 (처리 시: 불행이면 회복되지 않는다)
 function Kirafan3.Nohealfilter(c)
 	return not c:IsLocation(LOCATION_EMZONE) and c:GetCounter(0xb02)==0
+end
+
+--회복 대상 (발동 시: 불행이어도 대상으로 할 수 있다. 체인으로 먼저 불행을 해제하면 회복된다)
+function Kirafan3.Healtargetfilter(c)
+	return not c:IsLocation(LOCATION_EMZONE)
 end
 
 --(공통 효과에서 제외)일반 스킬 단일 회복 효과
@@ -75,13 +80,14 @@ function Kirafan3.SpCreamateSgHeal(c,heal)
 end
 function Kirafan3.sghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,0))
-	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function Kirafan3.sghealop(heal)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
+	if not tc or not Kirafan3.Nohealfilter(tc) then return end
 	local c=e:GetHandler()
 	local hp=tc:GetBaseDefense()-tc:GetDefense()
 	local heal2=math.max(0,(math.min(heal,hp)))
@@ -103,7 +109,7 @@ function Kirafan3.SpCreamateAllHeal(c,heal)
 end
 function Kirafan3.allhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function Kirafan3.allhealop(heal)
 	return function(e,tp,eg,ep,ev,re,r,rp)
@@ -131,13 +137,14 @@ function Kirafan3.SpCreamateOvSgHeal(c,heal)
 end
 function Kirafan3.ovsghealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,0))
-	local g=Duel.SelectTarget(tp,Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function Kirafan3.ovsghealop(heal)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
+	if not tc or not Kirafan3.Nohealfilter(tc) then return end
 	local c=e:GetHandler()
 	Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,heal) end
 end
@@ -157,7 +164,7 @@ function Kirafan3.SpCreamateOvAllHeal(c,heal)
 end
 function Kirafan3.ovallhealtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Nohealfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Kirafan3.Healtargetfilter,tp,LOCATION_MZONE,0,1,nil) end
 end
 function Kirafan3.ovallhealop(heal)
 	return function(e,tp,eg,ep,ev,re,r,rp)
