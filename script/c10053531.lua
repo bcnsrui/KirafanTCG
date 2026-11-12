@@ -77,8 +77,8 @@ end
 function s.dottetrigger(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tg=c:GetOverlayGroup()
-	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
-	Duel.Remove(c,POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
+	Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not main then return end

@@ -70,7 +70,7 @@ function Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp,dotte)
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
 	consumedotte=consumedotte+1 end
 end
 
@@ -85,7 +85,7 @@ function Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp,dotte)
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
 	consumeenemydotte=consumeenemydotte+1 end
 end
 
@@ -94,7 +94,7 @@ function Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():GetCounter(0xb04)>0 then
 	Duel.Damage(tp,1,REASON_EFFECT)
 	hunger=e:GetHandler():GetOverlayGroup():RandomSelect(tp,1)
-	Duel.Remove(hunger,POS_FACEDOWN,REASON_EFFECT) end
+	Duel.Remove(hunger,POS_FACEUP,REASON_EFFECT) end
 end
 
 --드로우 트리거
@@ -174,52 +174,11 @@ function Kirafan6.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,hp)
 	local bg=Duel.GetDecktopGroup(tp,hp)
 	if deckcount<hp then
 	local bg1=Duel.GetDecktopGroup(tp,deckcount)
-	Kirafan6.hiddenoverlay(hg,bg1)
+	Duel.Overlay(hg,bg1)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	local bg2=Duel.GetDecktopGroup(tp,hp-deckcount)
-	Kirafan6.hiddenoverlay(hg,bg2)
-	else Kirafan6.hiddenoverlay(hg,bg) end
-end
-
---비공개 체력카드(배틀 크리에메이트의 체력 카드. 소환사 아래 성채석 카드는 앞면 그대로)
---소재로 들어가는 카드를 비공개 체력카드(10050100)로 바꾸고 원래 카드 번호를 기억한다
---비공개 체력카드가 소재를 벗어나면 소멸하고, 원래 카드가 그 이동 장소로 대신 간다
-Kirafan6.HIDDEN_CARD=10050100
-Kirafan6.HIDDEN_RESTORED=10050193
-function Kirafan6.hiddenoverlay(target,g)
-	if g==nil then return end
-	if type(g)=="Card" then g=Group.FromCards(g) end
-	for tc in aux.Next(g) do
-		local code=tc:GetOriginalCode()
-		local owner=tc:GetOwner()
-		Duel.DisableShuffleCheck()
-		Duel.SendtoDeck(tc,nil,-2,REASON_RULE)
-		local hidden=Duel.CreateToken(owner,Kirafan6.HIDDEN_CARD)
-		Duel.Remove(hidden,POS_FACEDOWN,REASON_RULE)
-		Duel.Overlay(target,hidden)
-		for _,ev in ipairs({EVENT_REMOVE,EVENT_TO_GRAVE,EVENT_TO_DECK,EVENT_TO_HAND}) do
-			local e1=Effect.CreateEffect(hidden)
-			e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-			e1:SetCode(ev)
-			e1:SetLabel(code)
-			e1:SetOperation(Kirafan6.hiddenrestoreop)
-			hidden:RegisterEffect(e1)
-		end
-	end
-end
-function Kirafan6.hiddenrestoreop(e,tp,eg,ep,ev,re,r,rp)
-	local hidden=e:GetHandler()
-	if hidden:GetFlagEffect(Kirafan6.HIDDEN_RESTORED)>0 then return end
-	hidden:RegisterFlagEffect(Kirafan6.HIDDEN_RESTORED,0,0,1)
-	local loc=hidden:GetLocation()
-	local real=Duel.CreateToken(hidden:GetOwner(),e:GetLabel())
-	Duel.DisableShuffleCheck()
-	Duel.SendtoDeck(hidden,nil,-2,REASON_RULE)
-	if loc==LOCATION_REMOVED then Duel.Remove(real,POS_FACEDOWN,REASON_RULE)
-	elseif loc==LOCATION_GRAVE then Duel.SendtoGrave(real,REASON_RULE)
-	elseif loc==LOCATION_HAND then Duel.SendtoHand(real,nil,REASON_RULE)
-	else Duel.SendtoDeck(real,nil,SEQ_DECKSHUFFLE,REASON_RULE) end
+	Duel.Overlay(hg,bg2)
+	else Duel.Overlay(hg,bg) end
 end
 
 --크리에메이트 데미지 주기
@@ -230,13 +189,13 @@ function Kirafan6.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	if typ=="Card" then tg=ag
 	elseif typ=="Group" then tg=ag:GetFirst() end
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
+	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT) end
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT) end
 	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE) end
 	--나약함(체력 1이면 쓰러짐): 남은 체력 카드도 마을로 보내고 쓰러뜨린다
 	if tg:GetOverlayCount()==1 and tg:GetCounter(0xb01)>0 and tg:IsLocation(LOCATION_MZONE) then
-	Duel.Remove(tg:GetOverlayGroup(),POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(tg:GetOverlayGroup(),POS_FACEUP,REASON_EFFECT)
 	Duel.Destroy(tg,REASON_RULE) end
 end
 

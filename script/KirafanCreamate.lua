@@ -139,7 +139,7 @@ function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
 	--쓰러진 배틀 크리에메이트마다 1장, 마을로 보낼 성채석은 그 플레이어가 고른다
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local tc=g:Select(tp,1,1,nil)
-	Duel.Remove(tc,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 end
 
 --나약함으로 체력 1에서 쓰러지면 체력 카드가 붙은 채 엑스트라 덱(성전)으로 가므로, 남은 체력 카드도 마을로 보낸다
@@ -148,7 +148,7 @@ function Kirafan2.hpleftcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsLocation(LOCATION_EXTRA) and c:GetOverlayCount()>0
 end
 function Kirafan2.hpleftop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Remove(e:GetHandler():GetOverlayGroup(),POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(e:GetHandler():GetOverlayGroup(),POS_FACEUP,REASON_RULE)
 end
 
 --데미지처리(1무량공격,2카운터필요,3단일공격,4광역공격,5히로)

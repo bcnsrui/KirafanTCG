@@ -137,8 +137,8 @@ function Kirafan.Dotteop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc:IsLocation(LOCATION_MZONE) then
 	local tg=tc:GetOverlayGroup()
-	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
-	Duel.Remove(tc,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
+	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(tc,REASON_RULE)
 	else Duel.SendtoGrave(tc,REASON_RULE) end
 end
@@ -191,7 +191,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangePosition(sg,POS_FACEUP_ATTACK) end
 
 	local ag=Duel.GetFieldGroup(tp,LOCATION_SZONE,0)
-	Duel.Remove(ag,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(ag,POS_FACEUP,REASON_RULE)
 
 	local enemy2=Duel.GetMatchingGroup(Kirafan6.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)
 	local cg=enemy2:GetFirst()
@@ -210,7 +210,7 @@ function Kirafan.TurnPositionop(e,tp,eg,ep,ev,re,r,rp)
 	if tp~=Duel.GetTurnPlayer() and g>5 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,2))
 	local tg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,g-5,g-5,nil)
-	Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
+	Duel.Remove(tg,POS_FACEUP,REASON_RULE)
 	else end
 	
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
@@ -411,7 +411,7 @@ function Kirafan.Dotte10op(e,tp,eg,ep,ev,re,r,rp)
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEDOWN,REASON_EFFECT) end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
 end
 function Kirafan.Refreshcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0

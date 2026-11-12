@@ -78,10 +78,10 @@ function Kirafan5.Knightdamop1(e,tp,eg,ep,ev,re,r,rp)
 	local dam=1
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
+	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
 	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
@@ -107,10 +107,10 @@ function Kirafan5.Knightdamop2(e,tp,eg,ep,ev,re,r,rp)
 	local dam=2
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local g=tg:GetOverlayGroup()
-	if #g<=dam then Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
+	if #g<=dam then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	else
 	tc=g:RandomSelect(1-tp,dam)
-	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
+	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 	Kirafan6.hungerop(e,tp,eg,ep,ev,re,r,rp)
 end
