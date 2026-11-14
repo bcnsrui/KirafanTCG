@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-14T23:31:17Z",
+  "files": {
+    "data/ai/cards.json": {
+      "sha256": "88009c522c2c312b37510ba68cf859421c2d505ef5f0856d375645bb497c7fff",
+      "size": 159173,
+      "source": "data"
+    },
+    "data/ai/model.bin": {
+      "sha256": "6f9c0de4a98ebacd09fea96deaa82ac87b644d123f630e026ca5a886e309b3e1",
+      "size": 3022728,
+      "source": "data"
+    },
+    "data/ai/model.json": {
+      "sha256": "eecf7867faa505f26470d7c97882a94b7972b5562311dbf061a16326606d11cf",
+      "size": 4313,
+      "source": "data"
+    },
+    "data/ai_decks.json": {
+      "sha256": "b5d1aad1ab4501cb4eb8bd4234968c446afbe4dccfd914888aeda058adc6521f",
+      "size": 38592,
+      "source": "data"
+    },
+    "data/cards.json": {
+      "sha256": "395aa8182646b7fa49af53d18cf63603a2d9486bea5271683592655955effffc",
+      "size": 58422,
+      "source": "data"
+    },
+    "data/engine.json": {
+      "sha256": "686d179adb2c052627b24876e3e884ec2f29e8ec3fee2a36437072e6c741924c",
+      "size": 52174,
+      "source": "data"
+    },
+    "data/puzzles.json": {
+      "sha256": "0e5dfcfcbc339e5e469d856c53a767201112f9b65b98ac5a6158402922b1e530",
+      "size": 181542,
+      "source": "data"
+    },
+    "data/scripts.json": {
+      "sha256": "d6c107f05be4d3815042991871c770ebf2d3fee56112d2a4943eca99d9e80064",
+      "size": 225442,
+      "source": "data"
+    },
+    "data/sounds.json": {
+      "sha256": "cb6121de9fb738724ab075088f2c12347648d289ec340634399278ff4074128a",
+      "size": 3512,
+      "source": "data"
+    }
+  },
+  "sources": {
+    "data": "https://raw.githubusercontent.com/bcnsrui/KirafanTCG/main/web",
+    "pics": "https://raw.githubusercontent.com/bcnsrui/KirafanTCGpics/main",
+    "sound": "https://raw.githubusercontent.com/bcnsrui/KirafanTCGsound/main"
+  }
+}
