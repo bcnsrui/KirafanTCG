@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-15T12:56:54Z",
+  "generatedAt": "2026-11-15T13:31:06Z",
   "files": {
     "data/ai/cards.json": {
       "sha256": "34af0d816da2fb04716ed407955dff751cff27af715522a627cc15c245d4b5a2",
@@ -38,13 +38,13 @@
       "source": "data"
     },
     "data/en/puzzle-hints.json": {
-      "sha256": "24a301f617283a9b956a032410e95c6ca5844944a56e6059cc5fe85c6de0d93d",
-      "size": 54124,
+      "sha256": "8e3687e0cb831eb5c1abc1a1fcafc224af62f23a3b8777926964bf2b60d4ca40",
+      "size": 53887,
       "source": "data"
     },
     "data/en/puzzles.json": {
-      "sha256": "8a4147cfe726dad25725ca0d7993436650990a9abf94917d0d4836057f5bee65",
-      "size": 176195,
+      "sha256": "39148733b4e11d146fa84412524a3a7dd1221bf3d2d8e3356ef814c2d2731f81",
+      "size": 176025,
       "source": "data"
     },
     "data/engine.json": {
@@ -53,18 +53,18 @@
       "source": "data"
     },
     "data/ja/_card_descs.json": {
-      "sha256": "99492fd631d8fc619c29635cb73e29a4ff40dee18bef630b465dab6d55fecca2",
-      "size": 34385,
+      "sha256": "815a3c6a2e15ff9b997417a7f372038decbfd725733c6c9c104e76f3a9f9920c",
+      "size": 34272,
       "source": "data"
     },
     "data/ja/_engine_strings.json": {
-      "sha256": "6fd503a0305eadab97e61fafebcf5b45dc7c6019d782acb6a33b0312388a63a7",
-      "size": 6954,
+      "sha256": "7d03e039cb3497bc1125e974c16dd6e8bf0921ecbb019ab575fcb443274473dc",
+      "size": 6763,
       "source": "data"
     },
     "data/ja/_puzzle_hints_ja.json": {
-      "sha256": "f4a34c71e3428b24ef480294e75efc1aacb638c3ca7b1a71aecb7e6e94bda8e0",
-      "size": 56197,
+      "sha256": "a9f68b9279d6570fa7e936acf4183ed1f749c2dc71ce5d44cee8ea08905c9240",
+      "size": 55960,
       "source": "data"
     },
     "data/ja/cards.json": {
@@ -78,13 +78,13 @@
       "source": "data"
     },
     "data/ja/puzzle-hints.json": {
-      "sha256": "ab1fe9d029d553a44702ac94b2352a69c948ac6efa01844dc09cd279d9d9074a",
-      "size": 55602,
+      "sha256": "5c91dcfe73c658df910cccf5bad725e1cb0153f40d8893e2f9856069cfc83728",
+      "size": 55365,
       "source": "data"
     },
     "data/ja/puzzles.json": {
-      "sha256": "540ba92f579ae39ba3b4ad85a1f9ada289abb16d3d042c34deaba03f3b748850",
-      "size": 184312,
+      "sha256": "d98722abe90b73555b0095b88a100df9844f0cd4c270b5bce3eda039a0acdc62",
+      "size": 184142,
       "source": "data"
     },
     "data/puzzles.json": {
