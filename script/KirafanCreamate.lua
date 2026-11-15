@@ -137,7 +137,7 @@ function Kirafan2.hp0op2(e,tp,eg,ep,ev,re,r,rp)
 	local main=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local g=main:GetOverlayGroup()
 	--쓰러진 배틀 크리에메이트마다 1장, 마을로 보낼 성채석은 그 플레이어가 고른다
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050111,9))
 	local tc=g:Select(tp,1,1,nil)
 	Duel.Remove(tc,POS_FACEUP,REASON_RULE)
 end

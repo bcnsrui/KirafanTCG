@@ -73,6 +73,7 @@ function Kirafan.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(fg4,nil,0,REASON_RULE)
 	Duel.SendtoDeck(fg5,nil,0,REASON_RULE)
 	Duel.Draw(tp,9,REASON_RULE)
+	-- 개막 성전: 9장 뽑은 직후 4장을 고른다 (후공이 5장짜리 시작패에서 고르지 않도록)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,4))
 	local starlight=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,4,4,nil)
 	Duel.Overlay(e:GetHandler(),starlight)
@@ -123,6 +124,7 @@ function Kirafan.drawop(e,tp,eg,ep,ev,re,r,rp)
 	--후공 첫 턴: 1장 드로우
 	if turn==2 and Duel.GetTurnPlayer()==tp then return Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,1) end
 	if turn<3 then return end
+	-- 턴 플레이어만 3장 드로우. 성전 0~1장은 소환사마다 순차(선공/턴플 먼저, 그다음 후공)
 	if Duel.GetTurnPlayer()==tp then Kirafan6.kirafandrawop(e,tp,eg,ep,ev,re,r,rp,3) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10050112,5))
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
@@ -374,13 +376,16 @@ function Kirafan.MainCharacterSpEff(c)
 	e9:SetOperation(Kirafan.hp0op2)
 	c:RegisterEffect(e9)
 	--선공 첫 턴에는 통상 공격할 수 없다 (통상 공격으로 돗테오키 게이지를 얻을 수 없다)
+	--퍼즐 등은 DUEL_ATTACK_FIRST_TURN 이면 첫 턴 통상 공격 허용
 	local e10=Effect.CreateEffect(c)
 	e10:SetType(EFFECT_TYPE_FIELD)
 	e10:SetCode(EFFECT_CANNOT_ATTACK_ANNOUNCE)
 	e10:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e10:SetRange(LOCATION_EMZONE)
 	e10:SetTargetRange(LOCATION_MZONE,0)
-	e10:SetCondition(function() return Duel.GetTurnCount()==1 end)
+	e10:SetCondition(function()
+		return Duel.GetTurnCount()==1 and not Duel.IsDuelType(DUEL_ATTACK_FIRST_TURN)
+	end)
 	c:RegisterEffect(e10)
 end
 function Kirafan.aatcon2(e,tp,eg,ep,ev,re,r,rp)

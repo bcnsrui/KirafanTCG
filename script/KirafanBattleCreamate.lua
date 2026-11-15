@@ -60,33 +60,28 @@ function Kirafan6.NoEmFzonefilter(c)
 end
 
 --자신 돗테오키 게이지 줄이기
+--(매번 돗테오키 존을 다시 읽는다: 마을로 보낸 카드를 다시 고르지 않게)
 function Kirafan6.consumedotte(e,tp,eg,ep,ev,re,r,rp,dotte)
+	for i=1,dotte do
 	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
-	local consumedotte=0
-	local dotte2=(math.min(#g,dotte))
-	while consumedotte<dotte2 do
+	if #g==0 then return end
 	local last=g:GetFirst()
-	local tc=g:GetNext()
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	consumedotte=consumedotte+1 end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
 end
 
 --상대 돗테오키 게이지 줄이기
 function Kirafan6.consumeenemydotte(e,tp,eg,ep,ev,re,r,rp,dotte)
+	for i=1,dotte do
 	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_GRAVE,nil)
-	local consumeenemydotte=0
-	local dotte2=(math.min(#g,dotte))
-	while consumeenemydotte<dotte2 do
+	if #g==0 then return end
 	local last=g:GetFirst()
-	local tc=g:GetNext()
 	for tc in aux.Next(g) do
 		if tc:GetSequence()<last:GetSequence() then last=tc end
 	end
-	Duel.Remove(last,POS_FACEUP,REASON_EFFECT)
-	consumeenemydotte=consumeenemydotte+1 end
+	Duel.Remove(last,POS_FACEUP,REASON_EFFECT) end
 end
 
 --배고픔시 데미지
