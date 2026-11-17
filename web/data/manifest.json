@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-17T15:46:50Z",
+  "generatedAt": "2026-11-17T15:55:36Z",
   "files": {
     "data/ai/cards.json": {
       "sha256": "34af0d816da2fb04716ed407955dff751cff27af715522a627cc15c245d4b5a2",
@@ -85,11 +85,6 @@
     "data/ja/puzzles.json": {
       "sha256": "d98722abe90b73555b0095b88a100df9844f0cd4c270b5bce3eda039a0acdc62",
       "size": 184142,
-      "source": "data"
-    },
-    "data/packs.json": {
-      "sha256": "3e862a43f5f33b4b736d3e4fa8edbc86e753bb1eb7311b49d459e47bbb6c1036",
-      "size": 792,
       "source": "data"
     },
     "data/puzzles.json": {
