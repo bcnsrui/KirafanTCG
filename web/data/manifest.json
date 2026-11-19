@@ -1,7 +1,12 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-17T16:39:01Z",
+  "generatedAt": "2026-11-19T12:23:30Z",
   "files": {
+    "data/admin/replays/1795000593589_ai.json": {
+      "sha256": "64fe7219f389fff18c98cac36549fb413b211f038b872e81e5de0b03b774682d",
+      "size": 77779,
+      "source": "data"
+    },
     "data/ai/cards.json": {
       "sha256": "34af0d816da2fb04716ed407955dff751cff27af715522a627cc15c245d4b5a2",
       "size": 158340,
@@ -23,8 +28,8 @@
       "source": "data"
     },
     "data/cards.json": {
-      "sha256": "153c0aa74468445b8462a712165a670081eb0f60a8cac25c1c25c888fc18ac9c",
-      "size": 57687,
+      "sha256": "db4fb618be415d2d8825f6ae9923f1b50d86db3d2f0b53da40ef9548442a6615",
+      "size": 58335,
       "source": "data"
     },
     "data/en/cards.json": {
@@ -38,18 +43,18 @@
       "source": "data"
     },
     "data/en/puzzle-hints.json": {
-      "sha256": "8e3687e0cb831eb5c1abc1a1fcafc224af62f23a3b8777926964bf2b60d4ca40",
-      "size": 53887,
+      "sha256": "84e4257dfcc941b6f466de967684b21ab6934bb384f763eeb89618297aa899b3",
+      "size": 53977,
       "source": "data"
     },
     "data/en/puzzles.json": {
-      "sha256": "39148733b4e11d146fa84412524a3a7dd1221bf3d2d8e3356ef814c2d2731f81",
-      "size": 176025,
+      "sha256": "a64855371f34c3f846e845291c84d7feeac83845c26fa767b09c7ed1fde90ff7",
+      "size": 176541,
       "source": "data"
     },
     "data/engine.json": {
-      "sha256": "c3a4cf5390f16e82e8f9c66c420db752f4c520b85eb889ab39aac1e62959e239",
-      "size": 48418,
+      "sha256": "8b81f93fa55d94ed4151f4d668344132e1f7bd26c7f2d20cde681e99d34f1579",
+      "size": 52408,
       "source": "data"
     },
     "data/ja/_card_descs.json": {
@@ -63,8 +68,8 @@
       "source": "data"
     },
     "data/ja/_puzzle_hints_ja.json": {
-      "sha256": "a9f68b9279d6570fa7e936acf4183ed1f749c2dc71ce5d44cee8ea08905c9240",
-      "size": 55960,
+      "sha256": "2bb3c3b14fb3b33ce97b3e2cce9df109ec4c737c53a5299363bfe50d3e10de27",
+      "size": 57456,
       "source": "data"
     },
     "data/ja/cards.json": {
@@ -78,29 +83,34 @@
       "source": "data"
     },
     "data/ja/puzzle-hints.json": {
-      "sha256": "5c91dcfe73c658df910cccf5bad725e1cb0153f40d8893e2f9856069cfc83728",
-      "size": 55365,
+      "sha256": "f78652b9d46f50f857258c06af30e6dd5c93018e1aa3b83f651cb1fcf4201b53",
+      "size": 64422,
       "source": "data"
     },
     "data/ja/puzzles.json": {
-      "sha256": "d98722abe90b73555b0095b88a100df9844f0cd4c270b5bce3eda039a0acdc62",
-      "size": 184142,
+      "sha256": "55bf2c9f3e75f01435e0a4aa354ff395b401cfdf33ca7894fd5409f90dba26d6",
+      "size": 188959,
       "source": "data"
     },
     "data/puzzles.json": {
-      "sha256": "3380a1e5568a3786e4eefb4304a446bb6043040fd46f1af1cece6571ba87ec70",
-      "size": 181325,
+      "sha256": "9b3e7988efdd8ea3993c5c642a262e814d01b63cd86e76c32fb325658cc7a92d",
+      "size": 182012,
       "source": "data"
     },
     "data/scripts.json": {
-      "sha256": "e69757b850271734f96302c0b4227c57009ca1c4771681bcf42d5b3c9d1666a8",
-      "size": 225584,
+      "sha256": "7857b0e8a47021e6712fa164ddcbb6aefb993ee9af15c1734590b2618c88059e",
+      "size": 226441,
       "source": "data"
     },
     "data/sounds.json": {
-      "sha256": "a26e0ccae615cb1d7592484c165be779344364b7e8c295209f6212dd367b8712",
-      "size": 4453,
+      "sha256": "eb8888d197b6a0bd1f8735e72ea377cd199caee103aa0204d4c968e431d9ddb8",
+      "size": 5015,
       "source": "data"
+    },
+    "pics/10050011.jpg": {
+      "sha256": "112b88792181c61c3318803d21878deaac7fe57de092c221bf4ed75ecd9f8653",
+      "size": 66883,
+      "source": "pics"
     },
     "pics/10050110.jpg": {
       "sha256": "a998a174bc0452fb82c44860edad572be9cdfcedc80d167c4db3d82b18d1a2e9",
@@ -661,6 +671,11 @@
       "sha256": "b23eafe52bf045fbdaf5c6e8093b57544c783eb1a0e24c0cb68df9bf9d17a7e5",
       "size": 856072,
       "source": "pics"
+    },
+    "pics/small/10050011.jpg": {
+      "sha256": "e92a5d4459fae5264b7a04cbc42d156a95fcf7c5807b716ea6feccd40f3a4ef1",
+      "size": 12925,
+      "source": "data"
     },
     "pics/small/10050110.jpg": {
       "sha256": "2d05a028b56537831f3ba5c7d8224cf462cdfb6bb73b02f119bc3ec87c403b34",
@@ -1932,6 +1947,11 @@
       "size": 14418,
       "source": "sound"
     },
+    "sound/damage/10050011.mp3": {
+      "sha256": "99b6b27cdf208516d2d2e09dde2dfbe6ef606c033805c47e7d7ab0e625532ed6",
+      "size": 5850,
+      "source": "sound"
+    },
     "sound/damage/10051111.mp3": {
       "sha256": "edef472a81a2b9e6b8a7de2af8cd87113bada2d55ae6cad5fd9f3ea69ea57b3e",
       "size": 6895,
@@ -2245,6 +2265,11 @@
     "sound/damage/10053631.mp3": {
       "sha256": "e5291a8b199be0ef1366b1908183ec0213ad698f0cede6593e3ca4d6d41672f3",
       "size": 15254,
+      "source": "sound"
+    },
+    "sound/destroy/10050011.mp3": {
+      "sha256": "246373e61d4ae7f2714f2218c3dc72273742c912e6904a64a167c4ead1f1003e",
+      "size": 15672,
       "source": "sound"
     },
     "sound/destroy/10051111.mp3": {
@@ -3032,6 +3057,76 @@
       "size": 30510,
       "source": "sound"
     },
+    "sound/summoner/10050111.mp3": {
+      "sha256": "ff5c3e19768d6448f85a5d7d06d0cf20e62b9a5dadc16c2f05ae34a462568f60",
+      "size": 11283,
+      "source": "sound"
+    },
+    "sound/summoner/10050112.mp3": {
+      "sha256": "527cf4ff1c710e2aa835cd2ed78c1b04cc799e5bd7b8ff7d36e2fc29b4dc0270",
+      "size": 9194,
+      "source": "sound"
+    },
+    "sound/summoner/10050113.mp3": {
+      "sha256": "99daa1b449b7ca1a5dfbf4f67dac5327fe1b1be39cb207ba9a2a0ef2b27cb114",
+      "size": 16926,
+      "source": "sound"
+    },
+    "sound/summoner/10050114.mp3": {
+      "sha256": "e0b8f248ff074803c07a1aedbde748351484b3aa513cf9a5f2e962c43ef0dc51",
+      "size": 21105,
+      "source": "sound"
+    },
+    "sound/summoner/10050115.mp3": {
+      "sha256": "6e23dfe08f9357a2bdecc3bcc5b04f2bfc1d01e1c9bfb53ac64a3f53dcd0df48",
+      "size": 30510,
+      "source": "sound"
+    },
+    "sound/summoner/10050116.mp3": {
+      "sha256": "43aa863e74d71ab0c06b57641b14b99a1468e49e96bd0bed9b48b29d47bf91f3",
+      "size": 29256,
+      "source": "sound"
+    },
+    "sound/summoner/10050117.mp3": {
+      "sha256": "f5ed1b0ed675b398d938e96d66321c87699930f52ec100fce1e7069a72bd39d0",
+      "size": 23613,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050111.mp3": {
+      "sha256": "ff5c3e19768d6448f85a5d7d06d0cf20e62b9a5dadc16c2f05ae34a462568f60",
+      "size": 11283,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050112.mp3": {
+      "sha256": "527cf4ff1c710e2aa835cd2ed78c1b04cc799e5bd7b8ff7d36e2fc29b4dc0270",
+      "size": 9194,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050113.mp3": {
+      "sha256": "99daa1b449b7ca1a5dfbf4f67dac5327fe1b1be39cb207ba9a2a0ef2b27cb114",
+      "size": 16926,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050114.mp3": {
+      "sha256": "e0b8f248ff074803c07a1aedbde748351484b3aa513cf9a5f2e962c43ef0dc51",
+      "size": 21105,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050115.mp3": {
+      "sha256": "6e23dfe08f9357a2bdecc3bcc5b04f2bfc1d01e1c9bfb53ac64a3f53dcd0df48",
+      "size": 30510,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050116.mp3": {
+      "sha256": "43aa863e74d71ab0c06b57641b14b99a1468e49e96bd0bed9b48b29d47bf91f3",
+      "size": 29256,
+      "source": "sound"
+    },
+    "sound/summoner/summoner/10050117.mp3": {
+      "sha256": "f5ed1b0ed675b398d938e96d66321c87699930f52ec100fce1e7069a72bd39d0",
+      "size": 23613,
+      "source": "sound"
+    },
     "sound/totteoki/10051111.mp3": {
       "sha256": "070124c0331a448b05149623e0cb0db00beb96573d55cf49e004e5accab58d7e",
       "size": 22986,
@@ -3426,23 +3521,23 @@
   "packs": {
     "sound": {
       "file": "packs/sound.zip",
-      "sha256": "1cd135c256c5375e25ed2a2c8c77015552df715626db99a3f4c0943db18ea59a",
-      "size": 33536387,
-      "files": 440,
+      "sha256": "487007e572a7295b3f59072408e5b9fca025b83cc791622d10da813f1260b357",
+      "size": 33810880,
+      "files": 456,
       "source": "packs"
     },
     "pics": {
       "file": "packs/pics.zip",
-      "sha256": "f71a6e48225b64a7f513dd0095aef4cd029bdf1735705af54ec0b99b051a1f5b",
-      "size": 95137878,
-      "files": 224,
+      "sha256": "97777b47039ddac7e31e100da0b992da9efac1ad6d3b4679f7b140a492d45baa",
+      "size": 95217532,
+      "files": 226,
       "source": "packs"
     },
     "data": {
       "file": "packs/data.zip",
-      "sha256": "ce7f8654b65ba2a2d6de9616c9e7cc702a7d7b233cc16adbc4f399adb9e3b2b2",
-      "size": 4246261,
-      "files": 132,
+      "sha256": "4b4399651d827321460d2a2b6e2f3c5c502c0fd6c3bcc77377f8cb2aa1fde70d",
+      "size": 4270024,
+      "files": 134,
       "source": "packs"
     }
   },

@@ -1,27 +1,27 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-17T16:38:59Z",
+  "generatedAt": "2026-11-19T12:23:30Z",
   "base": "https://raw.githubusercontent.com/bcnsrui/KirafanTCG/main",
   "packs": {
     "sound": {
       "file": "packs/sound.zip",
-      "sha256": "1cd135c256c5375e25ed2a2c8c77015552df715626db99a3f4c0943db18ea59a",
-      "size": 33536387,
-      "files": 440,
+      "sha256": "487007e572a7295b3f59072408e5b9fca025b83cc791622d10da813f1260b357",
+      "size": 33810880,
+      "files": 456,
       "source": "packs"
     },
     "pics": {
       "file": "packs/pics.zip",
-      "sha256": "f71a6e48225b64a7f513dd0095aef4cd029bdf1735705af54ec0b99b051a1f5b",
-      "size": 95137878,
-      "files": 224,
+      "sha256": "97777b47039ddac7e31e100da0b992da9efac1ad6d3b4679f7b140a492d45baa",
+      "size": 95217532,
+      "files": 226,
       "source": "packs"
     },
     "data": {
       "file": "packs/data.zip",
-      "sha256": "ce7f8654b65ba2a2d6de9616c9e7cc702a7d7b233cc16adbc4f399adb9e3b2b2",
-      "size": 4246261,
-      "files": 132,
+      "sha256": "4b4399651d827321460d2a2b6e2f3c5c502c0fd6c3bcc77377f8cb2aa1fde70d",
+      "size": 4270024,
+      "files": 134,
       "source": "packs"
     }
   }
