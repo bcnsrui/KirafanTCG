@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-19T12:23:30Z",
+  "generatedAt": "2026-11-21T12:56:50Z",
   "files": {
     "data/admin/replays/1795000593589_ai.json": {
       "sha256": "64fe7219f389fff18c98cac36549fb413b211f038b872e81e5de0b03b774682d",
@@ -33,23 +33,23 @@
       "source": "data"
     },
     "data/en/cards.json": {
-      "sha256": "54d2f6a202f5c7cb188042e921ae90e2256de061ae13f0c23aab9e1c0abbf34a",
-      "size": 50705,
+      "sha256": "67b45efaf24ed70853ae06e78ccd6724e4df72c0fedc84ea5bc84a0cf85223f7",
+      "size": 51844,
       "source": "data"
     },
     "data/en/engine.json": {
-      "sha256": "448ee33e430447b1513146c23ff57a745b77f7356df4fcf9d6c56d25f277cf5a",
-      "size": 43427,
+      "sha256": "6b553da124d9675ec48a13c239d58dd0cb57d655b50c9344561a820b8b0e1e74",
+      "size": 44997,
       "source": "data"
     },
     "data/en/puzzle-hints.json": {
-      "sha256": "84e4257dfcc941b6f466de967684b21ab6934bb384f763eeb89618297aa899b3",
-      "size": 53977,
+      "sha256": "9088155600cdb08348a5c49b15f60c7805cbe5302cd08399d0564727afbfc343",
+      "size": 54297,
       "source": "data"
     },
     "data/en/puzzles.json": {
-      "sha256": "a64855371f34c3f846e845291c84d7feeac83845c26fa767b09c7ed1fde90ff7",
-      "size": 176541,
+      "sha256": "f8083bf5a5db00c129bca3569ee96a25b0d1fda4b2d5bbc18eee6cb7ba19338c",
+      "size": 174299,
       "source": "data"
     },
     "data/engine.json": {
@@ -68,38 +68,38 @@
       "source": "data"
     },
     "data/ja/_puzzle_hints_ja.json": {
-      "sha256": "2bb3c3b14fb3b33ce97b3e2cce9df109ec4c737c53a5299363bfe50d3e10de27",
-      "size": 57456,
+      "sha256": "c2f09c3a793e5850f91ea95c48a7033e058b85ec50bb47b1b3b004925e6aa9fe",
+      "size": 57485,
       "source": "data"
     },
     "data/ja/cards.json": {
-      "sha256": "7a7aacfead71c2864dc3ec7f186299a974e7533beb3c80712616e9ed68310cae",
-      "size": 59008,
+      "sha256": "d91fcc3a6b0c2e27bb3d0d5d3e3832f01f44b60ae4bfd3896c73336f13638e7e",
+      "size": 59637,
       "source": "data"
     },
     "data/ja/engine.json": {
-      "sha256": "cb0021f5012ef4c15bcdbfd705702fe3e3a8c5f80eccd2697995c7fcd7d1bf4e",
-      "size": 45049,
+      "sha256": "f2c612101e86d2c03fdde97696bb897cd4b2396307c6995c473ef9deb180498c",
+      "size": 46621,
       "source": "data"
     },
     "data/ja/puzzle-hints.json": {
-      "sha256": "f78652b9d46f50f857258c06af30e6dd5c93018e1aa3b83f651cb1fcf4201b53",
-      "size": 64422,
+      "sha256": "f4c3fdedd10e9bf4476c6f28f6bed797c3b196eb32a087da8145f45256357fac",
+      "size": 64847,
       "source": "data"
     },
     "data/ja/puzzles.json": {
-      "sha256": "55bf2c9f3e75f01435e0a4aa354ff395b401cfdf33ca7894fd5409f90dba26d6",
-      "size": 188959,
+      "sha256": "0d867b0208d7ddb863b196564a50e560215fddb89ee1ac0328e93a191a63603e",
+      "size": 186819,
       "source": "data"
     },
     "data/puzzles.json": {
-      "sha256": "9b3e7988efdd8ea3993c5c642a262e814d01b63cd86e76c32fb325658cc7a92d",
-      "size": 182012,
+      "sha256": "7e2c30b11c04de3b85fb161af320047badc99ab085809a4d63a72250a9842639",
+      "size": 179833,
       "source": "data"
     },
     "data/scripts.json": {
-      "sha256": "7857b0e8a47021e6712fa164ddcbb6aefb993ee9af15c1734590b2618c88059e",
-      "size": 226441,
+      "sha256": "f719ab85581b23cf29d162818530d1103bdb7a17be7c71c263f6bbcdc1dfbacb",
+      "size": 225879,
       "source": "data"
     },
     "data/sounds.json": {
