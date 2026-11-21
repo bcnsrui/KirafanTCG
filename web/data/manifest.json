@@ -1,12 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-21T12:56:50Z",
+  "generatedAt": "2026-11-21T13:55:53Z",
   "files": {
-    "data/admin/replays/1795000593589_ai.json": {
-      "sha256": "64fe7219f389fff18c98cac36549fb413b211f038b872e81e5de0b03b774682d",
-      "size": 77779,
-      "source": "data"
-    },
     "data/ai/cards.json": {
       "sha256": "34af0d816da2fb04716ed407955dff751cff27af715522a627cc15c245d4b5a2",
       "size": 158340,
@@ -25,6 +20,11 @@
     "data/ai_decks.json": {
       "sha256": "2717c6083d88ac774b66aa5153b7bbbd6fed8012983cf02057521ac3a3c7fe4c",
       "size": 38595,
+      "source": "data"
+    },
+    "data/card_ranking.json": {
+      "sha256": "5297635011b3eed905046dc6e6ffd40b29aa0db121ac3c9321eb9bca7b688102",
+      "size": 7945,
       "source": "data"
     },
     "data/cards.json": {
@@ -3535,8 +3535,8 @@
     },
     "data": {
       "file": "packs/data.zip",
-      "sha256": "4b4399651d827321460d2a2b6e2f3c5c502c0fd6c3bcc77377f8cb2aa1fde70d",
-      "size": 4270024,
+      "sha256": "4eab7ddbd3b9072e99ac7620602acf4c20a6bae0efc0df9d53662b50c93b9d49",
+      "size": 4267388,
       "files": 134,
       "source": "packs"
     }
