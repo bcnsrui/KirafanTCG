@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-21T13:55:53Z",
+  "generatedAt": "2026-11-22T01:12:17Z",
   "files": {
     "data/ai/cards.json": {
       "sha256": "34af0d816da2fb04716ed407955dff751cff27af715522a627cc15c245d4b5a2",
@@ -18,8 +18,8 @@
       "source": "data"
     },
     "data/ai_decks.json": {
-      "sha256": "2717c6083d88ac774b66aa5153b7bbbd6fed8012983cf02057521ac3a3c7fe4c",
-      "size": 38595,
+      "sha256": "b5d1aad1ab4501cb4eb8bd4234968c446afbe4dccfd914888aeda058adc6521f",
+      "size": 38592,
       "source": "data"
     },
     "data/card_ranking.json": {
@@ -28,13 +28,13 @@
       "source": "data"
     },
     "data/cards.json": {
-      "sha256": "db4fb618be415d2d8825f6ae9923f1b50d86db3d2f0b53da40ef9548442a6615",
-      "size": 58335,
+      "sha256": "5f36dfd4828f3156b3f1ad2add386b91ca7921789c6ccf33c4e97a635670643a",
+      "size": 58442,
       "source": "data"
     },
     "data/en/cards.json": {
-      "sha256": "67b45efaf24ed70853ae06e78ccd6724e4df72c0fedc84ea5bc84a0cf85223f7",
-      "size": 51844,
+      "sha256": "4211ef3b8c1731fe2ed5d6e8d0ea2d83c6ce805a14b340ae1672f42980192da6",
+      "size": 51953,
       "source": "data"
     },
     "data/en/engine.json": {
@@ -73,8 +73,8 @@
       "source": "data"
     },
     "data/ja/cards.json": {
-      "sha256": "d91fcc3a6b0c2e27bb3d0d5d3e3832f01f44b60ae4bfd3896c73336f13638e7e",
-      "size": 59637,
+      "sha256": "6ec6759ff824ad21e28312b69d05d58f286adce79f35df0cca3b518dea017086",
+      "size": 59763,
       "source": "data"
     },
     "data/ja/engine.json": {
@@ -98,8 +98,8 @@
       "source": "data"
     },
     "data/scripts.json": {
-      "sha256": "f719ab85581b23cf29d162818530d1103bdb7a17be7c71c263f6bbcdc1dfbacb",
-      "size": 225879,
+      "sha256": "ff90355c2a536954e89df9af5fa1162bcc044ac43539ba8a5c9ca5320f82ba40",
+      "size": 226463,
       "source": "data"
     },
     "data/sounds.json": {
@@ -3535,9 +3535,9 @@
     },
     "data": {
       "file": "packs/data.zip",
-      "sha256": "4eab7ddbd3b9072e99ac7620602acf4c20a6bae0efc0df9d53662b50c93b9d49",
-      "size": 4267388,
-      "files": 134,
+      "sha256": "acbfbaf4d467ec079e7ec90cf91799dc0b64e910de0b2b973d997766a14b6877",
+      "size": 9569231,
+      "files": 161,
       "source": "packs"
     }
   },
