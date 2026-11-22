@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-22T01:12:17Z",
+  "generatedAt": "2026-11-22T02:57:37Z",
   "base": "https://raw.githubusercontent.com/bcnsrui/KirafanTCG/main",
   "packs": {
     "sound": {
@@ -19,9 +19,9 @@
     },
     "data": {
       "file": "packs/data.zip",
-      "sha256": "acbfbaf4d467ec079e7ec90cf91799dc0b64e910de0b2b973d997766a14b6877",
-      "size": 9569231,
-      "files": 161,
+      "sha256": "73e1ddc793ea6cffde3bdbbc34043c0c539df84b8d1219d8c0448bd8302739c7",
+      "size": 4267588,
+      "files": 134,
       "source": "packs"
     }
   }
